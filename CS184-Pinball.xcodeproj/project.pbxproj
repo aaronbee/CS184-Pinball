@@ -10,7 +10,6 @@
 		8DD76F6A0486A84900D96B5E /* CS184-Pinball.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* CS184-Pinball.1 */; };
 		93F32D8F114720A3002C900A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32D8E114720A3002C900A /* GLUT.framework */; };
 		93F32D91114720A3002C900A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32D90114720A3002C900A /* OpenGL.framework */; };
-		93F32DD911472116002C900A /* glut32.lib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32DBB11472116002C900A /* glut32.lib */; };
 		93F32DDA11472116002C900A /* graphman.zip in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32DBD11472116002C900A /* graphman.zip */; };
 		93F32DDB11472116002C900A /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F32DC111472116002C900A /* Image.cpp */; };
 		93F32DDC11472116002C900A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F32DC311472116002C900A /* main.cpp */; };
@@ -43,8 +42,6 @@
 		93F32D90114720A3002C900A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		93F32DB711472115002C900A /* 3dto3d.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3dto3d.exe; sourceTree = "<group>"; };
 		93F32DB811472116002C900A /* cat.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cat.obj; sourceTree = "<group>"; };
-		93F32DBA11472116002C900A /* glut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glut.h; sourceTree = "<group>"; };
-		93F32DBB11472116002C900A /* glut32.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = glut32.lib; sourceTree = "<group>"; };
 		93F32DBC11472116002C900A /* glut32.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = glut32.dll; sourceTree = "<group>"; };
 		93F32DBD11472116002C900A /* graphman.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = graphman.zip; sourceTree = "<group>"; };
 		93F32DBE11472116002C900A /* hw3.sln */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hw3.sln; sourceTree = "<group>"; };
@@ -83,7 +80,6 @@
 			files = (
 				93F32D8F114720A3002C900A /* GLUT.framework in Frameworks */,
 				93F32D91114720A3002C900A /* OpenGL.framework in Frameworks */,
-				93F32DD911472116002C900A /* glut32.lib in Frameworks */,
 				93F32DDA11472116002C900A /* graphman.zip in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,15 +124,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		93F32DB911472116002C900A /* gl */ = {
-			isa = PBXGroup;
-			children = (
-				93F32DBA11472116002C900A /* glut.h */,
-				93F32DBB11472116002C900A /* glut32.lib */,
-			);
-			path = gl;
-			sourceTree = "<group>";
-		};
 		93F32DC411472116002C900A /* nv */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,7 +153,6 @@
 				93F32DC011472116002C900A /* hw3.vcproj */,
 				93F32DB711472115002C900A /* 3dto3d.exe */,
 				93F32DBE11472116002C900A /* hw3.sln */,
-				93F32DB911472116002C900A /* gl */,
 				93F32DBC11472116002C900A /* glut32.dll */,
 				93F32DBD11472116002C900A /* graphman.zip */,
 			);
