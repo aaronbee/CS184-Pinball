@@ -312,7 +312,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TGAimage.cpp</string>
+								<string>main.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -320,11 +320,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TGAimage.cpp</string>
+										<string>main.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>93F32E61114728E5002C900A</string>
+										<string>93F32E6411474E01002C900A</string>
 										<key>history</key>
 										<array>
 											<string>93F32DE7114721AF002C900A</string>
@@ -332,12 +332,12 @@
 											<string>93F32E06114724FE002C900A</string>
 											<string>93F32E07114724FE002C900A</string>
 											<string>93F32E08114724FE002C900A</string>
-											<string>93F32E1D11472580002C900A</string>
 											<string>93F32E3A11472680002C900A</string>
 											<string>93F32E3B11472680002C900A</string>
 											<string>93F32E3C11472680002C900A</string>
 											<string>93F32E5E11472781002C900A</string>
-											<string>93F32E53114726F8002C900A</string>
+											<string>93F32E6211474E01002C900A</string>
+											<string>93F32E6311474E01002C900A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>

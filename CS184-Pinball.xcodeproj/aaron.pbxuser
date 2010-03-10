@@ -164,6 +164,9 @@
 			93F32E5E11472781002C900A /* PBXTextBookmark */ = 93F32E5E11472781002C900A /* PBXTextBookmark */;
 			93F32E5F11472781002C900A /* PBXTextBookmark */ = 93F32E5F11472781002C900A /* PBXTextBookmark */;
 			93F32E61114728E5002C900A /* PBXTextBookmark */ = 93F32E61114728E5002C900A /* PBXTextBookmark */;
+			93F32E6211474E01002C900A /* PBXTextBookmark */ = 93F32E6211474E01002C900A /* PBXTextBookmark */;
+			93F32E6311474E01002C900A /* PBXTextBookmark */ = 93F32E6311474E01002C900A /* PBXTextBookmark */;
+			93F32E6411474E01002C900A /* PBXTextBookmark */ = 93F32E6411474E01002C900A /* PBXTextBookmark */;
 		};
 		sourceControlManager = 93F32D8B11471F71002C900A /* Source Control */;
 		userBuildSettings = {
@@ -244,10 +247,10 @@
 	};
 	93F32DC311472116002C900A /* main.cpp */ = {
 		uiCtxt = {
-			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1132, 149}\";\n            s = 0;\n        },\n                {\n            r = \"{1299, 601}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 2845}\";\n    s = 0;\n}";
-			sepNavIntBoundsRect = "{{0, 0}, {726, 1235}}";
-			sepNavSelRange = "{1152, 0}";
-			sepNavVisRange = "{0, 385}";
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1132, 149}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 2846}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {519, 1430}}";
+			sepNavSelRange = "{1446, 0}";
+			sepNavVisRange = "{1198, 558}";
 		};
 	};
 	93F32DC911472116002C900A /* nvMeshIO.h */ = {
@@ -486,7 +489,7 @@
 		fRef = 93F32DC311472116002C900A /* main.cpp */;
 		name = "main.cpp: 83";
 		rLen = 0;
-		rLoc = 1900;
+		rLoc = 1901;
 		rType = 0;
 		vrLen = 385;
 		vrLoc = 0;
@@ -789,6 +792,36 @@
 		rType = 0;
 		vrLen = 585;
 		vrLoc = 2162;
+	};
+	93F32E6211474E01002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
+		name = "TGAimage.cpp: 75";
+		rLen = 0;
+		rLoc = 2742;
+		rType = 0;
+		vrLen = 585;
+		vrLoc = 2162;
+	};
+	93F32E6311474E01002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DC311472116002C900A /* main.cpp */;
+		name = "main.cpp: 83";
+		rLen = 0;
+		rLoc = 1901;
+		rType = 0;
+		vrLen = 385;
+		vrLoc = 0;
+	};
+	93F32E6411474E01002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DC311472116002C900A /* main.cpp */;
+		name = "main.cpp: 75";
+		rLen = 0;
+		rLoc = 1594;
+		rType = 0;
+		vrLen = 558;
+		vrLoc = 1346;
 	};
 	C6859E8B029090EE04C91782 /* CS184-Pinball.1 */ = {
 		uiCtxt = {

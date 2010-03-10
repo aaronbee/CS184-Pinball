@@ -72,7 +72,7 @@ void init() {
     unsigned int nverts;
     float *vertexdata, *normaldata, *texcoords;
 	float *tangendata, *binormdata; //you can ignore these two
-	LoadObjModel( "cat.obj", nverts, nindices, indices,
+	LoadObjModel( "Ramp.obj", nverts, nindices, indices,
 		vertexdata, normaldata, tangendata, binormdata, texcoords );
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 
