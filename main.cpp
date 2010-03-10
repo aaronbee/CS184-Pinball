@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "nv/objload.h"
 #include "TGAimage.h"
-#include <gl/glut.h>
+#include <GLUT/glut.h>
 
 int amount;
 

@@ -11,7 +11,7 @@
 
 
 #include <stdio.h>
-#include "gl/glut.h"
+#include "GLUT/glut.h"
 
 class Image  
 {

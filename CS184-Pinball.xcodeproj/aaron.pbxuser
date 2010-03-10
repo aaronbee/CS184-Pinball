@@ -96,8 +96,8 @@
 	93F32DC311472116002C900A /* main.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {726, 1625}}";
-			sepNavSelRange = "{104, 2}";
-			sepNavVisRange = "{0, 383}";
+			sepNavSelRange = "{108, 0}";
+			sepNavVisRange = "{0, 385}";
 		};
 	};
 	93F32DE7114721AF002C900A /* PBXTextBookmark */ = {
@@ -118,7 +118,7 @@
 		isa = PBXTextBookmark;
 		fRef = 93F32DC311472116002C900A /* main.cpp */;
 		name = "main.cpp: 6";
-		rLen = 2;
+		rLen = 4;
 		rLoc = 104;
 		rType = 0;
 		vrLen = 383;
