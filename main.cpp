@@ -66,13 +66,27 @@ void init() {
 	up = vec3(0, 1, 0);
 	amount = 5;
 
+  
+  //lighting
+  
+  glEnable(GL_LIGHTING);
+  
+  
+	GLfloat light_specular[] = {1, 1, 1, 1};
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glEnable(GL_LIGHT0);
+  
+  GLfloat light_position[] = {0, 5, 10, 1};
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+  
+  
 	tex = new TGAImage();
-	tex->open("texture.tga");
+	tex->open("texture2.tga");
 	tex->updateTexture();
     unsigned int nverts;
     float *vertexdata, *normaldata, *texcoords;
 	float *tangendata, *binormdata; //you can ignore these two
-	LoadObjModel( "cat.obj", nverts, nindices, indices,
+	LoadObjModel( "elephant.obj", nverts, nindices, indices,
 		vertexdata, normaldata, tangendata, binormdata, texcoords );
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 
@@ -94,12 +108,41 @@ void display() {
 	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
 
 	glBegin( GL_QUADS );
-		glTexCoord2d(0.0,0.0); glVertex3d(-5.0,-5.0, -1.4);
-		glTexCoord2d(4.0,0.0); glVertex3d(5.0,-5.0, -1.4);
-		glTexCoord2d(4.0,4.0); glVertex3d(5.0,5.0, -1.4);
-		glTexCoord2d(0.0,4.0); glVertex3d(-5.0,5.0, -1.4);
+		glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4);
+		glTexCoord2d(40.0,0.0); glVertex3d(50.0,-50.0, -1.4);
+		glTexCoord2d(40.0,40.0); glVertex3d(50.0,50.0, -1.4);
+		glTexCoord2d(0.0,40.0); glVertex3d(-50.0,50.0, -1.4);
+	glEnd();
+  
+  glBegin( GL_QUADS );
+    glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
+    glTexCoord2d(40.0,40.0); glVertex3d(-25.0,25.0, -1.4);
+    glTexCoord2d(0.0,40.0); glVertex3d(-25.0,25.0, 5.0);
+    glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
+	glEnd();
+  
+  glBegin( GL_QUADS );
+  glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
+  glTexCoord2d(40.0,40.0); glVertex3d(-25.0,25.0, -1.4);
+  glTexCoord2d(0.0,40.0); glVertex3d(-25.0,25.0, 5.0);
+  glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
+	glEnd();
+  
+  glBegin( GL_QUADS );
+  glTexCoord2d(0.0,0.0); glVertex3d(25.0,25.0, -1.4);
+  glTexCoord2d(40.0,40.0); glVertex3d(25.0,-25.0, -1.4);
+  glTexCoord2d(0.0,40.0); glVertex3d(25.0,-25.0, 5.0);
+  glTexCoord2d(40.0,0.0); glVertex3d(25.0,25.0, 5.0);
 	glEnd();
 
+  glBegin( GL_QUADS );
+  glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
+  glTexCoord2d(40.0,40.0); glVertex3d(25.0,-25.0, -1.4);
+  glTexCoord2d(0.0,40.0); glVertex3d(25.0,-25.0, 5.0);
+  glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
+	glEnd();
+  
+  
 	glutSwapBuffers();
 }
 
@@ -112,7 +155,7 @@ int main(int argc, char* argv[]) {
 	glutSpecialFunc(specialKey);
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshape);
-	glutReshapeWindow(600, 400);
+	glutReshapeWindow(800, 600);
 	printHelp();
 	glutMainLoop();
 	return 0;
