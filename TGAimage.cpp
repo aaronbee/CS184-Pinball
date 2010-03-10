@@ -73,4 +73,8 @@ void TGAImage::open(char* filename){
 			data[i + 2] = temp;
 		}
 	}
+	else 
+	{
+		printf("Couldn't find file %s.\n", filename);
+	}
 }

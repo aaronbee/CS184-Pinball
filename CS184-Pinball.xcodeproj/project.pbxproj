@@ -10,7 +10,6 @@
 		8DD76F6A0486A84900D96B5E /* CS184-Pinball.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* CS184-Pinball.1 */; };
 		93F32D8F114720A3002C900A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32D8E114720A3002C900A /* GLUT.framework */; };
 		93F32D91114720A3002C900A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32D90114720A3002C900A /* OpenGL.framework */; };
-		93F32DDA11472116002C900A /* graphman.zip in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F32DBD11472116002C900A /* graphman.zip */; };
 		93F32DDB11472116002C900A /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F32DC111472116002C900A /* Image.cpp */; };
 		93F32DDC11472116002C900A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F32DC311472116002C900A /* main.cpp */; };
 		93F32DDD11472116002C900A /* nv_algebra.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F32DC511472116002C900A /* nv_algebra.cpp */; };
@@ -80,7 +79,6 @@
 			files = (
 				93F32D8F114720A3002C900A /* GLUT.framework in Frameworks */,
 				93F32D91114720A3002C900A /* OpenGL.framework in Frameworks */,
-				93F32DDA11472116002C900A /* graphman.zip in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
