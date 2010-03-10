@@ -85,4 +85,11 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
+	C6859E8B029090EE04C91782 /* CS184-Pinball.1 */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {635, 1027}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 908}";
+		};
+	};
 }
