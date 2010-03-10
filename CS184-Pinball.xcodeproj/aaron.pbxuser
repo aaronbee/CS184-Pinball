@@ -158,6 +158,12 @@
 			93F32E53114726F8002C900A /* PBXTextBookmark */ = 93F32E53114726F8002C900A /* PBXTextBookmark */;
 			93F32E54114726F8002C900A /* PBXTextBookmark */ = 93F32E54114726F8002C900A /* PBXTextBookmark */;
 			93F32E55114726F8002C900A /* PBXTextBookmark */ = 93F32E55114726F8002C900A /* PBXTextBookmark */;
+			93F32E571147273E002C900A /* PBXTextBookmark */ = 93F32E571147273E002C900A /* PBXTextBookmark */;
+			93F32E581147273F002C900A /* PBXTextBookmark */ = 93F32E581147273F002C900A /* PBXTextBookmark */;
+			93F32E5D11472780002C900A /* PBXTextBookmark */ = 93F32E5D11472780002C900A /* PBXTextBookmark */;
+			93F32E5E11472781002C900A /* PBXTextBookmark */ = 93F32E5E11472781002C900A /* PBXTextBookmark */;
+			93F32E5F11472781002C900A /* PBXTextBookmark */ = 93F32E5F11472781002C900A /* PBXTextBookmark */;
+			93F32E61114728E5002C900A /* PBXTextBookmark */ = 93F32E61114728E5002C900A /* PBXTextBookmark */;
 		};
 		sourceControlManager = 93F32D8B11471F71002C900A /* Source Control */;
 		userBuildSettings = {
@@ -260,9 +266,9 @@
 	};
 	93F32DD511472116002C900A /* TGAimage.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {712, 1118}}";
-			sepNavSelRange = "{2788, 0}";
-			sepNavVisRange = "{2331, 481}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1001}}";
+			sepNavSelRange = "{2742, 0}";
+			sepNavVisRange = "{2162, 585}";
 		};
 	};
 	93F32DD611472116002C900A /* TGAimage.h */ = {
@@ -630,7 +636,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2756;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 640;
 		vrLoc = 0;
@@ -640,7 +646,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2802;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 478;
 		vrLoc = 2331;
@@ -650,7 +656,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2802;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 478;
 		vrLoc = 2331;
@@ -670,8 +676,8 @@
 		comments = "'cout' was not declared in this scope";
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 77;
+		rLen = 0;
+		rLoc = 74;
 		rType = 1;
 	};
 	93F32E4A114726AB002C900A /* PBXTextBookmark */ = {
@@ -679,7 +685,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2756;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 984;
 		vrLoc = 0;
@@ -689,7 +695,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2788;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 481;
 		vrLoc = 2331;
@@ -699,7 +705,7 @@
 		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
 		name = "TGAimage.cpp: 78";
 		rLen = 0;
-		rLoc = 2788;
+		rLoc = 2742;
 		rType = 0;
 		vrLen = 481;
 		vrLoc = 2331;
@@ -723,6 +729,66 @@
 		rType = 0;
 		vrLen = 563;
 		vrLoc = 97845;
+	};
+	93F32E571147273E002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
+		name = "TGAimage.cpp: 78";
+		rLen = 0;
+		rLoc = 2742;
+		rType = 0;
+		vrLen = 1177;
+		vrLoc = 0;
+	};
+	93F32E581147273F002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DB811472116002C900A /* cat.obj */;
+		name = "cat.obj: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 563;
+		vrLoc = 97845;
+	};
+	93F32E5D11472780002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
+		name = "TGAimage.cpp: 78";
+		rLen = 0;
+		rLoc = 2742;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 0;
+	};
+	93F32E5E11472781002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DB811472116002C900A /* cat.obj */;
+		name = "cat.obj: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 563;
+		vrLoc = 97845;
+	};
+	93F32E5F11472781002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
+		name = "TGAimage.cpp: 78";
+		rLen = 0;
+		rLoc = 2742;
+		rType = 0;
+		vrLen = 481;
+		vrLoc = 2331;
+	};
+	93F32E61114728E5002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DD511472116002C900A /* TGAimage.cpp */;
+		name = "TGAimage.cpp: 75";
+		rLen = 0;
+		rLoc = 2742;
+		rType = 0;
+		vrLen = 585;
+		vrLoc = 2162;
 	};
 	C6859E8B029090EE04C91782 /* CS184-Pinball.1 */ = {
 		uiCtxt = {
