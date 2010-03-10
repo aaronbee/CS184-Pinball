@@ -4,6 +4,9 @@
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 93F32D8211471F6F002C900A /* CS184-Pinball */;
 		activeTarget = 8DD76F620486A84900D96B5E /* CS184-Pinball */;
+		addToTargets = (
+			8DD76F620486A84900D96B5E /* CS184-Pinball */,
+		);
 		codeSenseManager = 93F32D8C11471F71002C900A /* Code sense */;
 		executables = (
 			93F32D8211471F6F002C900A /* CS184-Pinball */,
@@ -33,6 +36,11 @@
 			};
 			PBXPerProjectTemplateStateSaveDate = 289873775;
 			PBXWorkspaceStateSaveDate = 289873775;
+		};
+		perUserProjectItems = {
+			93F32DE7114721AF002C900A /* PBXTextBookmark */ = 93F32DE7114721AF002C900A /* PBXTextBookmark */;
+			93F32DE8114721AF002C900A /* PBXBookmark */ = 93F32DE8114721AF002C900A /* PBXBookmark */;
+			93F32DE9114721AF002C900A /* PBXTextBookmark */ = 93F32DE9114721AF002C900A /* PBXTextBookmark */;
 		};
 		sourceControlManager = 93F32D8B11471F71002C900A /* Source Control */;
 		userBuildSettings = {
@@ -85,9 +93,40 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
+	93F32DC311472116002C900A /* main.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 1625}}";
+			sepNavSelRange = "{104, 2}";
+			sepNavVisRange = "{0, 383}";
+		};
+	};
+	93F32DE7114721AF002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C6859E8B029090EE04C91782 /* CS184-Pinball.1 */;
+		name = "CS184-Pinball.1: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 908;
+		vrLoc = 0;
+	};
+	93F32DE8114721AF002C900A /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 93F32DC311472116002C900A /* main.cpp */;
+	};
+	93F32DE9114721AF002C900A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 93F32DC311472116002C900A /* main.cpp */;
+		name = "main.cpp: 6";
+		rLen = 2;
+		rLoc = 104;
+		rType = 0;
+		vrLen = 383;
+		vrLoc = 0;
+	};
 	C6859E8B029090EE04C91782 /* CS184-Pinball.1 */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {635, 1027}}";
+			sepNavIntBoundsRect = "{{0, 0}, {635, 975}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 908}";
 		};
