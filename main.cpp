@@ -86,7 +86,9 @@ void init() {
     unsigned int nverts;
     float *vertexdata, *normaldata, *texcoords;
 	float *tangendata, *binormdata; //you can ignore these two
+
 	LoadObjModel( "elephant.obj", nverts, nindices, indices,
+
 		vertexdata, normaldata, tangendata, binormdata, texcoords );
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 

@@ -69,6 +69,7 @@
 		93F32DD611472116002C900A /* TGAimage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TGAimage.h; sourceTree = "<group>"; };
 		93F32DD711472116002C900A /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		93F32DD811472116002C900A /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		93F32E6711475015002C900A /* Ramp.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ramp.obj; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* CS184-Pinball.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = "CS184-Pinball.1"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +161,7 @@
 		93F32DE61147218D002C900A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				93F32E6711475015002C900A /* Ramp.obj */,
 				93F32DD411472116002C900A /* texture.tga */,
 				93F32DB811472116002C900A /* cat.obj */,
 			);
