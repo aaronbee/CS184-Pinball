@@ -73,21 +73,35 @@ void init() {
   
   
 	GLfloat light_specular[] = {1, 1, 1, 1};
+	GLfloat light_ambient[] = {0,0,0,1};
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_specular);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glEnable(GL_LIGHT0);
   
-  GLfloat light_position[] = {0, 5, 10, 1};
+  GLfloat light_position[] = {1,1,0};
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   
-  
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
+	
+  	GLfloat one[] = {1, 1, 1, 1};
+	GLfloat small[] = {0.2, 0.2, 0.2, 1};
+	GLfloat high[] = {100};
+	glMaterialfv(GL_FRONT, GL_AMBIENT, one);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, small);
+	glMaterialfv(GL_FRONT, GL_SHININESS, high);
+	
+	
 	tex = new TGAImage();
-	tex->open("texture2.tga");
+	tex->open("texture.tga");
 	tex->updateTexture();
     unsigned int nverts;
     float *vertexdata, *normaldata, *texcoords;
 	float *tangendata, *binormdata; //you can ignore these two
 
-	LoadObjModel( "elephant.obj", nverts, nindices, indices,
+	LoadObjModel( "cat.obj", nverts, nindices, indices,
 
 		vertexdata, normaldata, tangendata, binormdata, texcoords );
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
