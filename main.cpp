@@ -72,11 +72,10 @@ void init() {
   glEnable(GL_LIGHTING);
   
   
-	GLfloat light_specular[] = {1, 1, 1, 1};
-	GLfloat light_ambient[] = {0,0,0,1};
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_specular);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	GLfloat light_white[] = {1, 1, 1, 1};
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_white);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_white);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_white);
 	glEnable(GL_LIGHT0);
   
   GLfloat light_position[] = {1,1,0};
