@@ -12,8 +12,12 @@ vec3 up;
 bool updateLight0, updateLight1;
 int w, h;
 Image* tex;
-unsigned int nindices;
-unsigned int *indices;
+unsigned int e_nindices, p_nindices;
+unsigned int *e_indices, *p_indices;
+
+unsigned int e_nverts, p_nverts;
+float *e_vertexdata, *e_normaldata, *e_texcoords, *p_vertexdata, *p_normaldata, *p_texcoords;
+float *e_tangendata, *e_binormdata, *p_tangendata, *p_binormdata; //you can ignore these two
 
 void printHelp() {
 	printf("press '+' or '-' to change the amount of rotation that\noccurs with each arrow press.\n");
@@ -72,10 +76,15 @@ void init() {
   glEnable(GL_LIGHTING);
   
   
-	GLfloat light_white[] = {1, 1, 1, 1};
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_white);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_white);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light_white);
+    GLfloat one[] = {1, 1, 1, 1};
+    GLfloat medium[] = {0.5, 0.5, 0.5, 1};
+    GLfloat small[] = {0.2, 0.2, 0.2, 1};
+    GLfloat high[] = {100};
+	GLfloat light_specular[] = {1, 0.5, 0, 1};
+
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, small);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
 	glEnable(GL_LIGHT0);
   
   GLfloat light_position[] = {1,1,0};
@@ -83,10 +92,7 @@ void init() {
   
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
-	
-  	GLfloat one[] = {1, 1, 1, 1};
-	GLfloat small[] = {0.2, 0.2, 0.2, 1};
-	GLfloat high[] = {100};
+
 	glMaterialfv(GL_FRONT, GL_AMBIENT, one);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, small);
@@ -96,14 +102,13 @@ void init() {
 	tex = new TGAImage();
 	tex->open("texture.tga");
 	tex->updateTexture();
-    unsigned int nverts;
-    float *vertexdata, *normaldata, *texcoords;
-	float *tangendata, *binormdata; //you can ignore these two
 
+	
+	LoadObjModel( "elephant-normals.obj", e_nverts, e_nindices, e_indices,
+				 e_vertexdata, e_normaldata, e_tangendata, e_binormdata, e_texcoords );
 
-	LoadObjModel( "plunger.obj", nverts, nindices, indices,
-		vertexdata, normaldata, tangendata, binormdata, texcoords );
-	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
+	LoadObjModel( "plunger.obj", p_nverts, p_nindices, p_indices,
+				 p_vertexdata, p_normaldata, p_tangendata, p_binormdata, p_texcoords );
 
 	glEnable(GL_DEPTH_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -115,21 +120,30 @@ void display() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
+	glEnableClientState(GL_NORMAL_ARRAY);
+//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glLoadIdentity();
 	gluLookAt(eye.x, eye.y, eye.z,
 			0, 0, 0,
 			up.x, up.y, up.z);
 
-
+	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, e_normaldata);
+	
 	glPushMatrix();
 //	glColor3f(1.0,0,0);
-	glTranslatef(5, 0, 0);
-	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
+	glTranslatef(2, 0, 0);
+	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
 	glPopMatrix();
+	
+	
+
+	glVertexPointer(3, GL_FLOAT, 0, p_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 
 	glPushMatrix();
-	glTranslatef(-5, 0, 0);
-	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
+	glTranslatef(-2, 0, 0);
+	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
 	glPopMatrix();
 	
 	glBegin( GL_QUADS );
