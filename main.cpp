@@ -137,7 +137,7 @@ void init() {
 	
 	
 	tex = new TGAImage();
-	tex->open("texture.tga");
+	tex->open("texture3.tga");
 	tex->updateTexture();
 
 	
@@ -178,7 +178,7 @@ void display() {
 	
 	glPushMatrix();
 //	glColor3f(1.0,0,0);
-	glTranslatef(2, 0, 0);
+	glTranslatef(2.5, 0, 0);
 	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
 	glPopMatrix();
 
@@ -186,7 +186,7 @@ void display() {
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 
 	glPushMatrix();
-	glTranslatef(-2, 0, 0);
+	glTranslatef(2, 0, 2);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
 	glPopMatrix();
 	
@@ -194,7 +194,7 @@ void display() {
 	glNormalPointer(GL_FLOAT, 0, f_normaldata);
 	
 	glPushMatrix();
-	glTranslatef(0, 0, 2);
+	glTranslatef(-0.5, 0, 2);
 	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
 	glPopMatrix();
 	
@@ -210,7 +210,7 @@ void display() {
 	glNormalPointer(GL_FLOAT, 0, r_normaldata);
 	
 	glPushMatrix();
-	glTranslatef(0, 2, 0);
+	glTranslatef(-2, -3, 0);
 	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
 	glPopMatrix();
 	
