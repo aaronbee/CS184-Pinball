@@ -100,8 +100,8 @@ void init() {
     float *vertexdata, *normaldata, *texcoords;
 	float *tangendata, *binormdata; //you can ignore these two
 
-	LoadObjModel( "cat.obj", nverts, nindices, indices,
 
+	LoadObjModel( "plunger.obj", nverts, nindices, indices,
 		vertexdata, normaldata, tangendata, binormdata, texcoords );
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 
@@ -120,8 +120,18 @@ void display() {
 			0, 0, 0,
 			up.x, up.y, up.z);
 
-	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
 
+	glPushMatrix();
+//	glColor3f(1.0,0,0);
+	glTranslatef(5, 0, 0);
+	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-5, 0, 0);
+	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
+	glPopMatrix();
+	
 	glBegin( GL_QUADS );
 		glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4);
 		glTexCoord2d(40.0,0.0); glVertex3d(50.0,-50.0, -1.4);
