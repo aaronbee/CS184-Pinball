@@ -12,12 +12,40 @@ vec3 up;
 bool updateLight0, updateLight1;
 int w, h;
 Image* tex;
-unsigned int e_nindices, p_nindices;
-unsigned int *e_indices, *p_indices;
+unsigned int e_nindices;
+unsigned int p_nindices;
+unsigned int *e_indices;
+unsigned int *p_indices;
 
-unsigned int e_nverts, p_nverts;
-float *e_vertexdata, *e_normaldata, *e_texcoords, *p_vertexdata, *p_normaldata, *p_texcoords;
-float *e_tangendata, *e_binormdata, *p_tangendata, *p_binormdata; //you can ignore these two
+unsigned int e_nverts;
+unsigned int p_nverts;
+float *e_vertexdata, *e_normaldata, *e_texcoords;
+float *p_vertexdata, *p_normaldata, *p_texcoords;
+float *e_tangendata, *e_binormdata;
+float *p_tangendata, *p_binormdata; //you can ignore these two
+
+// Bumper variables
+unsigned int b_nindices; 
+unsigned int *b_indices;
+unsigned int b_nverts;
+float *b_vertexdata, *b_normaldata, *b_texcoords;
+float *b_tangendata, *b_binormdata;
+
+// Foot variables
+unsigned int f_nindices;
+unsigned int *f_indices;
+unsigned int f_nverts;
+float *f_vertexdata, *f_normaldata, *f_texcoords;
+float *f_tangendata, *f_binormdata;
+
+// Ramp
+unsigned int r_nindices;
+unsigned int *r_indices;
+unsigned int r_nverts;
+float *r_vertexdata, *r_normaldata, *r_texcoords;
+float *r_tangendata, *r_binormdata;
+
+
 
 void printHelp() {
 	printf("press '+' or '-' to change the amount of rotation that\noccurs with each arrow press.\n");
@@ -80,15 +108,24 @@ void init() {
     GLfloat medium[] = {0.5, 0.5, 0.5, 1};
     GLfloat small[] = {0.2, 0.2, 0.2, 1};
     GLfloat high[] = {100};
-	GLfloat light_specular[] = {1, 0.5, 0, 1};
-
+    GLfloat light_specular[] = {1, 0.5, 0, 1};
+    GLfloat light_specular1[] = {0, 0.5, 1, 1};
+    GLfloat light_position[] = {5, 5, 0, 1};
+    GLfloat light_position1[] = {5, -5, 0, 1};
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, small);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, medium);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
 	glEnable(GL_LIGHT0);
+	
+	
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE,  medium);
+    glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
   
-  GLfloat light_position[] = {1,1,0};
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
   
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
@@ -109,6 +146,15 @@ void init() {
 
 	LoadObjModel( "plunger.obj", p_nverts, p_nindices, p_indices,
 				 p_vertexdata, p_normaldata, p_tangendata, p_binormdata, p_texcoords );
+	
+	LoadObjModel( "rampnormals.obj", r_nverts, r_nindices, r_indices,
+				 r_vertexdata, r_normaldata, r_tangendata, r_binormdata, r_texcoords );
+	
+	LoadObjModel( "bumper.obj", b_nverts, b_nindices, b_indices,
+				 b_vertexdata, b_normaldata, b_tangendata, b_binormdata, b_texcoords );
+	
+	LoadObjModel( "crazyfoot.obj", f_nverts, f_nindices, f_indices,
+				 f_vertexdata, f_normaldata, f_tangendata, f_binormdata, f_texcoords );
 
 	glEnable(GL_DEPTH_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -135,8 +181,6 @@ void display() {
 	glTranslatef(2, 0, 0);
 	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
 	glPopMatrix();
-	
-	
 
 	glVertexPointer(3, GL_FLOAT, 0, p_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
@@ -144,6 +188,30 @@ void display() {
 	glPushMatrix();
 	glTranslatef(-2, 0, 0);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
+	glPopMatrix();
+	
+	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, f_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(0, 0, 2);
+	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
+	glPopMatrix();
+	
+	glVertexPointer(3, GL_FLOAT, 0, b_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, b_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(0, -2, 0);
+	glDrawElements( GL_TRIANGLES, b_nindices, GL_UNSIGNED_INT, b_indices );
+	glPopMatrix();
+	
+	glVertexPointer(3, GL_FLOAT, 0, r_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, r_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(0, 2, 0);
+	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
 	glPopMatrix();
 	
 	glBegin( GL_QUADS );
