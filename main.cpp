@@ -12,7 +12,7 @@ vec3 up;
 bool updateLight0, updateLight1;
 int w, h;
 
-int mouseoldx, mouseoldy ; // For mouse motion
+int oldx = 0, oldy = 0 ; // For mouse motion
 float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0;
 
 Image* tex;
@@ -94,19 +94,35 @@ void keyboard(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
+void drag(int x, int y) {
+	float dx = (x - oldx);
+	float dy = - (y - oldy);
+	oldx = x;
+	oldy = y;
+	xrot += dx;
+	yrot += dy;
+	glutPostRedisplay();
+
+}
+
+void mouse(int x, int y) {
+	oldx = x;
+	oldy = y;
+}
+
 void specialKey(int key, int x, int y) {
 	switch(key) {
 	case 100: //left
-		Transform::left(static_cast<float>(amount), eye,  up);
+			yrot += 5;
 		break;
 	case 101: //up
-		Transform::up(static_cast<float>(amount),  eye,  up);
+			xrot += 5;
 		break;
 	case 102: //right
-		Transform::left(static_cast<float>(-amount),  eye,  up);
+			yrot -= 5;
 		break;
 	case 103: //down
-		Transform::up(static_cast<float>(-amount),  eye,  up);
+			xrot -= 5;
 		break;
 	}
 	up.normalize();
@@ -207,9 +223,9 @@ void display() {
 	
 	camera();
 	
-	gluLookAt(eye.x, eye.y, eye.z,
-			0, 0, 0,
-			up.x, up.y, up.z);
+//	gluLookAt(eye.x, eye.y, eye.z,
+//			0, 0, 0,
+//			up.x, up.y, up.z);
 
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, e_normaldata);
@@ -301,6 +317,9 @@ int main(int argc, char* argv[]) {
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshape);
 	glutReshapeWindow(800, 600);
+//	glutMouseFunc(mouse);
+	glutPassiveMotionFunc(mouse);
+	glutMotionFunc(drag);
 	printHelp();
 	glutMainLoop();
 	return 0;
