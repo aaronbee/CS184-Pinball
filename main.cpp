@@ -99,8 +99,10 @@ void drag(int x, int y) {
 	float dy = - (y - oldy);
 	oldx = x;
 	oldy = y;
-	xrot += dx;
-	yrot += dy;
+	xrot += dy;
+	yrot += dx;
+	if (xrot < 180) xrot = 180;
+	if (xrot > 360) xrot = 360;
 	glutPostRedisplay();
 
 }
@@ -186,7 +188,7 @@ void init() {
 	tex->updateTexture();
 
 	
-	LoadObjModel( "elephant-normals.obj", e_nverts, e_nindices, e_indices,
+	LoadObjModel( "elephant2.obj", e_nverts, e_nindices, e_indices,
 				 e_vertexdata, e_normaldata, e_tangendata, e_binormdata, e_texcoords );
 
 	LoadObjModel( "plunger.obj", p_nverts, p_nindices, p_indices,
@@ -209,7 +211,7 @@ void init() {
 
 void camera() {
 	glRotatef(xrot, 1.0, 0.0, 0.0);
-	glRotatef(yrot, 0.0, 1.0, 0.0);
+	glRotatef(yrot, 0.0, 0.0, 1.0);
 	glTranslated(-xpos, -ypos, -zpos);
 }
 
@@ -240,7 +242,7 @@ void display() {
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 
 	glPushMatrix();
-	glTranslatef(2, 0, 2);
+	glTranslatef(2, 0, 5);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
 	glPopMatrix();
 	
