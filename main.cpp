@@ -11,6 +11,10 @@ vec3 eye;
 vec3 up;
 bool updateLight0, updateLight1;
 int w, h;
+
+int mouseoldx, mouseoldy ; // For mouse motion
+float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0;
+
 Image* tex;
 unsigned int e_nindices;
 unsigned int p_nindices;
@@ -52,15 +56,40 @@ void printHelp() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
+	float xrotrad, yrotrad;
 	switch(key) {
-	case '+':
-		amount++;
-		printf("amount set to %d\n", amount);
-		break;
-	case '-':
-		amount--;
-		printf("amount set to %d\n", amount);
-		break;
+		case '+':
+			amount++;
+			printf("amount set to %d\n", amount);
+			break;
+		case '-':
+			amount--;
+			printf("amount set to %d\n", amount);
+			break;
+		case 'w':
+			xrotrad = xrot * nv_to_rad;
+			yrotrad = yrot * nv_to_rad;
+			xpos += float(sin(yrotrad)) * 0.2;
+			zpos -= float(cos(yrotrad)) * 0.2;
+			ypos -= float(sin(xrotrad)) * 0.2;
+			break;
+		case 's':
+			xrotrad = xrot * nv_to_rad;
+			yrotrad = yrot * nv_to_rad;
+			xpos -= float(sin(yrotrad)) * 0.2;
+			zpos += float(cos(yrotrad)) * 0.2;
+			ypos += float(sin(xrotrad)) * 0.2;
+			break;
+		case 'd':
+			yrotrad = yrot * nv_to_rad;
+			xpos += float(cos(yrotrad)) * 0.2;
+			zpos += float(sin(yrotrad)) * 0.2;
+			break;
+		case 'a':
+			yrotrad = yrot * nv_to_rad;
+			xpos -= float(cos(yrotrad)) * 0.2;
+			zpos -= float(sin(yrotrad)) * 0.2;
+			break;
 	}
 	glutPostRedisplay();
 }
@@ -162,6 +191,12 @@ void init() {
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
 
+void camera() {
+	glRotatef(xrot, 1.0, 0.0, 0.0);
+	glRotatef(yrot, 0.0, 1.0, 0.0);
+	glTranslated(-xpos, -ypos, -zpos);
+}
+
 void display() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -169,6 +204,9 @@ void display() {
 	glEnableClientState(GL_NORMAL_ARRAY);
 //	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glLoadIdentity();
+	
+	camera();
+	
 	gluLookAt(eye.x, eye.y, eye.z,
 			0, 0, 0,
 			up.x, up.y, up.z);
