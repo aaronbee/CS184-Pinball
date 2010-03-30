@@ -425,7 +425,7 @@ void display() {
 	glEnd();
   */
   
-  RenderSkybox(vec3(xpos,ypos,zpos), vec3(50,50,50));
+  RenderSkybox(pos, vec3(50,50,50));
   
 	glutSwapBuffers();
   
