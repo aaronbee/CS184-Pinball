@@ -57,7 +57,8 @@ void printHelp() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-	vec3 change_in_pos;
+	vec3 change_in_pos = vec3(0,0,0);
+	float scale = 0.1 * amount;
 	switch(key) {
 		case '+':
 			amount++;
@@ -65,19 +66,20 @@ void keyboard(unsigned char key, int x, int y) {
 			break;
 		case '-':
 			amount--;
+			if (amount == 0) amount = 1;
 			printf("amount set to %d\n", amount);
 			break;
 		case 'w':
-			change_in_pos = vec3(look.x * 0.2, look.y * 0.2, look.z * 0.2);
+			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
 			break;
 		case 's':
-			change_in_pos = vec3(-look.x * 0.2, -look.y * 0.2, -look.z * 0.2);
+			change_in_pos = vec3(-look.x * scale, -look.y * scale, -look.z * scale);
 			break;
 		case 'd':
-			change_in_pos = vec3(right.x * 0.2, right.y * 0.2, right.z * 0.2);
+			change_in_pos = vec3(right.x * scale, right.y * scale, right.z * scale);
 			break;
 		case 'a':
-			change_in_pos = vec3(-right.x * 0.2, -right.y * 0.2, -right.z * 0.2);
+			change_in_pos = vec3(-right.x * scale, -right.y * scale, -right.z * scale);
 			break;
 	}
 	pos = pos + change_in_pos;
@@ -88,12 +90,7 @@ nv_scalar to_radians(float degrees) {
 	return nv_scalar(degrees) * nv_to_rad;
 }
 
-void drag(int x, int y) {
-	float pitch = - (y - oldy) * 0.3;
-	float yaw = (x - oldx) * 0.2;
-	oldx = x;
-	oldy = y;
-	
+void rotate_camera(float pitch, float yaw) {
 	mat3 pitch_rot = mat3();
 	pitch_rot.set_rot(to_radians(pitch), right);
 	
@@ -106,13 +103,21 @@ void drag(int x, int y) {
 	look = look * yaw_rot;
 	up = up * yaw_rot;
 	right = right * yaw_rot;
-
+	
 	normalize(up);
 	normalize(look);
 	normalize(right);
 	
 	glutPostRedisplay();
+}
 
+void drag(int x, int y) {
+	float pitch = - (y - oldy) * 0.3;
+	float yaw = (x - oldx) * 0.2;
+	oldx = x;
+	oldy = y;
+	
+	rotate_camera(pitch, yaw);
 }
 
 void mouse(int x, int y) {
@@ -127,21 +132,20 @@ void camera() {
 }
 
 void specialKey(int key, int x, int y) {
-//	switch(key) {
-//	case 100: //left
-//			yrot += 5;
-//		break;
-//	case 101: //up
-//			xrot += 5;
-//		break;
-//	case 102: //right
-//			yrot -= 5;
-//		break;
-//	case 103: //down
-//			xrot -= 5;
-//		break;
-//	}
-	up.normalize();
+	switch(key) {
+	case 100: //left
+			rotate_camera(0, 5);
+		break;
+	case 101: //up
+			rotate_camera(-5, 0);
+		break;
+	case 102: //right
+			rotate_camera(0, -5);
+		break;
+	case 103: //down
+			rotate_camera(5, 0);
+		break;
+	}
 	glutPostRedisplay();
 }
 
@@ -159,7 +163,7 @@ void init() {
 	up = vec3(0, 0, 1);
 	right = vec3(1, 0, 0);
 	pos = vec3(0, 0, 0);
-	amount = 5;
+	amount = 3;
 
   
   //lighting
