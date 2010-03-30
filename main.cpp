@@ -11,6 +11,7 @@ vec3 look;
 vec3 up;
 vec3 right;
 vec3 pos;
+vec3 ball_pos;
 bool updateLight0, updateLight1;
 int w, h;
 
@@ -258,6 +259,7 @@ void init() {
 	right = vec3(1, 0, 0);
 	pos = vec3(0, 0, 0);
 	amount = 3;
+	ball_pos = vec3(0, 0, 0);
 
   
   //lighting
@@ -377,7 +379,10 @@ void display() {
 	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
 	glPopMatrix();
 	
-  
+	glPushMatrix();
+	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
+	glutSolidSphere(1, 15, 15);
+	glPopMatrix();
   
   
   tex = new TGAImage();
