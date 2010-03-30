@@ -107,6 +107,9 @@ void drag(int x, int y) {
 	up = up * yaw_rot;
 	right = right * yaw_rot;
 
+	normalize(up);
+	normalize(look);
+	normalize(right);
 	
 	glutPostRedisplay();
 
