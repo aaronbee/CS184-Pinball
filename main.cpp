@@ -7,13 +7,14 @@
 
 int amount;
 
-vec3 eye;
+vec3 look;
 vec3 up;
+vec3 right;
+vec3 pos;
 bool updateLight0, updateLight1;
 int w, h;
 
 int oldx = 0, oldy = 0 ; // For mouse motion
-float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0;
 
 Image* tex;
 unsigned int e_nindices;
@@ -56,7 +57,8 @@ void printHelp() {
 }
 
 void keyboard(unsigned char key, int x, int y) {
-	float xrotrad, yrotrad;
+	vec3 change_in_pos = vec3(0,0,0);
+	float scale = 0.1 * amount;
 	switch(key) {
 		case '+':
 			amount++;
@@ -64,47 +66,58 @@ void keyboard(unsigned char key, int x, int y) {
 			break;
 		case '-':
 			amount--;
+			if (amount == 0) amount = 1;
 			printf("amount set to %d\n", amount);
 			break;
 		case 'w':
-			xrotrad = xrot * nv_to_rad;
-			yrotrad = yrot * nv_to_rad;
-			xpos += float(sin(yrotrad)) * 0.2;
-			zpos -= float(cos(yrotrad)) * 0.2;
-			ypos -= float(sin(xrotrad)) * 0.2;
+			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
 			break;
 		case 's':
-			xrotrad = xrot * nv_to_rad;
-			yrotrad = yrot * nv_to_rad;
-			xpos -= float(sin(yrotrad)) * 0.2;
-			zpos += float(cos(yrotrad)) * 0.2;
-			ypos += float(sin(xrotrad)) * 0.2;
+			change_in_pos = vec3(-look.x * scale, -look.y * scale, -look.z * scale);
 			break;
 		case 'd':
-			yrotrad = yrot * nv_to_rad;
-			xpos += float(cos(yrotrad)) * 0.2;
-			zpos += float(sin(yrotrad)) * 0.2;
+			change_in_pos = vec3(right.x * scale, right.y * scale, right.z * scale);
 			break;
 		case 'a':
-			yrotrad = yrot * nv_to_rad;
-			xpos -= float(cos(yrotrad)) * 0.2;
-			zpos -= float(sin(yrotrad)) * 0.2;
+			change_in_pos = vec3(-right.x * scale, -right.y * scale, -right.z * scale);
 			break;
 	}
+	pos = pos + change_in_pos;
+	glutPostRedisplay();
+}
+
+nv_scalar to_radians(float degrees) {
+	return nv_scalar(degrees) * nv_to_rad;
+}
+
+void rotate_camera(float pitch, float yaw) {
+	mat3 pitch_rot = mat3();
+	pitch_rot.set_rot(to_radians(pitch), right);
+	
+	up = up * pitch_rot;
+	look = look * pitch_rot;
+	
+	mat3 yaw_rot = mat3();
+	yaw_rot.set_rot(to_radians(yaw), vec3(0,0,-1));
+	
+	look = look * yaw_rot;
+	up = up * yaw_rot;
+	right = right * yaw_rot;
+	
+	normalize(up);
+	normalize(look);
+	normalize(right);
+	
 	glutPostRedisplay();
 }
 
 void drag(int x, int y) {
-	float dx = (x - oldx);
-	float dy = - (y - oldy);
+	float pitch = - (y - oldy) * 0.3;
+	float yaw = (x - oldx) * 0.2;
 	oldx = x;
 	oldy = y;
-	xrot += dy;
-	yrot += dx;
-	if (xrot < 180) xrot = 180;
-	if (xrot > 360) xrot = 360;
-	glutPostRedisplay();
-
+	
+	rotate_camera(pitch, yaw);
 }
 
 void mouse(int x, int y) {
@@ -112,22 +125,27 @@ void mouse(int x, int y) {
 	oldy = y;
 }
 
+void camera() {
+	gluLookAt(pos.x, pos.y, pos.z,
+			  pos.x + look.x, pos.y + look.y, pos.z + look.z,
+			  up.x, up.y, up.z);
+}
+
 void specialKey(int key, int x, int y) {
 	switch(key) {
 	case 100: //left
-			yrot += 5;
+			rotate_camera(0, 5);
 		break;
 	case 101: //up
-			xrot += 5;
+			rotate_camera(-5, 0);
 		break;
 	case 102: //right
-			yrot -= 5;
+			rotate_camera(0, -5);
 		break;
 	case 103: //down
-			xrot -= 5;
+			rotate_camera(5, 0);
 		break;
 	}
-	up.normalize();
 	glutPostRedisplay();
 }
 
@@ -235,9 +253,11 @@ void RenderSkybox(vec3 position,vec3 size)
 
 
 void init() {
-	eye = vec3(0, 0, 5);
-	up = vec3(0, 1, 0);
-	amount = 5;
+	look = vec3(0, 1, 0);
+	up = vec3(0, 0, 1);
+	right = vec3(1, 0, 0);
+	pos = vec3(0, 0, 0);
+	amount = 3;
 
   
   //lighting
@@ -304,12 +324,6 @@ void init() {
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
 
-void camera() {
-	glRotatef(xrot, 1.0, 0.0, 0.0);
-	glRotatef(yrot, 0.0, 0.0, 1.0);
-	glTranslated(-xpos, -ypos, -zpos);
-}
-
 void display() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -320,9 +334,7 @@ void display() {
 	
 	camera();
 	
-//	gluLookAt(eye.x, eye.y, eye.z,
-//			0, 0, 0,
-//			up.x, up.y, up.z);
+
 
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, e_normaldata);
