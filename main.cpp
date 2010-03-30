@@ -89,23 +89,23 @@ nv_scalar to_radians(float degrees) {
 }
 
 void drag(int x, int y) {
-	float yaw = (x - oldx) * 0.2;
 	float pitch = - (y - oldy) * 0.3;
+	float yaw = (x - oldx) * 0.2;
 	oldx = x;
 	oldy = y;
 	
-	mat3 up_rot = mat3();
-	up_rot.set_rot(to_radians(pitch), right);
+	mat3 pitch_rot = mat3();
+	pitch_rot.set_rot(to_radians(pitch), right);
 	
-	up = up * up_rot;
-	look = look * up_rot;
+	up = up * pitch_rot;
+	look = look * pitch_rot;
 	
-	mat3 eye_rot = mat3();
-	eye_rot.set_rot(to_radians(yaw), vec3(0,0,-1));
+	mat3 yaw_rot = mat3();
+	yaw_rot.set_rot(to_radians(yaw), vec3(0,0,-1));
 	
-	look = look * eye_rot;
-	up = up * eye_rot;
-	right = right * eye_rot;
+	look = look * yaw_rot;
+	up = up * yaw_rot;
+	right = right * yaw_rot;
 
 	
 	glutPostRedisplay();
