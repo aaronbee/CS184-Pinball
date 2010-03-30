@@ -140,6 +140,100 @@ void reshape(int width, int height){
 	glViewport(0, 0, w, h);
 }
 
+/************************************************************************/
+/*	Render a skybox with center point position and dimension sizes size */
+/************************************************************************/
+
+void RenderSkybox(vec3 position,vec3 size)
+{	
+	// Begin DrawSkybox
+	glColor4f(1.0, 1.0, 1.0,1.0f);
+  
+	// Save Current Matrix
+	glPushMatrix();
+  
+	// Second Move the render space to the correct position (Translate)
+	glTranslatef(position.x,position.y,position.z);
+  
+	// First apply scale matrix
+	glScalef(size.x,size.y,size.z);
+  
+	float cz = -0.0f,cx = 1.0f;
+	float r = 1.0f; // If you have border issues change this to 1.005f
+	// Common Axis Z - FRONT Side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[4]);
+  tex->open("2.tga");
+	tex->updateTexture();
+  
+	glBegin(GL_QUADS);	
+  glTexCoord2f(cx, cz); glVertex3f(-r ,1.0f,-r);
+  glTexCoord2f(cx,  cx); glVertex3f(-r,1.0f,r);
+  glTexCoord2f(cz,  cx); glVertex3f( r,1.0f,r); 
+  glTexCoord2f(cz, cz); glVertex3f( r ,1.0f,-r);
+	glEnd();
+  
+  
+	// Common Axis Z - BACK side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[5]);
+  tex->open("1.tga");
+	tex->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f(cx,cz);  glVertex3f(-r,-1.0f,-r);
+  glTexCoord2f(cx,cx);  glVertex3f(-r,-1.0f, r);
+  glTexCoord2f(cz,cx);  glVertex3f( r,-1.0f, r); 
+  glTexCoord2f(cz,cz);  glVertex3f( r,-1.0f,-r);
+	glEnd();
+  
+	// Common Axis X - Left side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[3]);
+  tex->open("3.tga");
+	tex->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f(cx,cx); glVertex3f(-1.0f, -r, r);	
+  glTexCoord2f(cz,cx); glVertex3f(-1.0f,  r, r); 
+  glTexCoord2f(cz,cz); glVertex3f(-1.0f,  r,-r);
+  glTexCoord2f(cx,cz); glVertex3f(-1.0f, -r,-r);		
+	glEnd();
+  
+	// Common Axis X - Right side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[2]);
+  tex->open("4.tga");
+	tex->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f( cx,cx); glVertex3f(1.0f, -r, r);	
+  glTexCoord2f(cz, cx); glVertex3f(1.0f,  r, r); 
+  glTexCoord2f(cz, cz); glVertex3f(1.0f,  r,-r);
+  glTexCoord2f(cx, cz); glVertex3f(1.0f, -r,-r);
+	glEnd();
+  
+	// Common Axis Y - Draw Up side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[0]);
+  tex->open("6.tga");
+	tex->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f(cz, cz); glVertex3f( r, -r,1.0f);
+  glTexCoord2f(cx, cz); glVertex3f( r,  r,1.0f); 
+  glTexCoord2f(cx, cx); glVertex3f(-r,  r,1.0f);
+  glTexCoord2f(cz, cx); glVertex3f(-r, -r,1.0f);
+	glEnd();
+  
+	// Common Axis Y - Down side
+	//glBindTexture(GL_TEXTURE_2D,SkyBox[1]);
+  tex->open("5.tga");
+	tex->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f(cz,cz);  glVertex3f( r, -r,-1.0f);
+  glTexCoord2f( cx,cz); glVertex3f( r,  r,-1.0f); 
+  glTexCoord2f( cx,cx); glVertex3f(-r,  r,-1.0f);
+  glTexCoord2f(cz, cx); glVertex3f(-r, -r,-1.0f);
+	glEnd();
+ 
+	// Load Saved Matrix
+	glPopMatrix();
+ 
+};
+
+
 void init() {
 	eye = vec3(0, 0, 5);
 	up = vec3(0, 1, 0);
@@ -183,11 +277,12 @@ void init() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, high);
 	
 	
-	tex = new TGAImage();
-	tex->open("texture3.tga");
-	tex->updateTexture();
 
 	
+
+  
+  
+  
 	LoadObjModel( "elephant2.obj", e_nverts, e_nindices, e_indices,
 				 e_vertexdata, e_normaldata, e_tangendata, e_binormdata, e_texcoords );
 
@@ -270,6 +365,13 @@ void display() {
 	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
 	glPopMatrix();
 	
+  
+  
+  
+  tex = new TGAImage();
+	
+  
+  /*
 	glBegin( GL_QUADS );
 		glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4);
 		glTexCoord2d(40.0,0.0); glVertex3d(50.0,-50.0, -1.4);
@@ -304,9 +406,12 @@ void display() {
   glTexCoord2d(0.0,40.0); glVertex3d(25.0,-25.0, 5.0);
   glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
 	glEnd();
+  */
   
+  RenderSkybox(vec3(xpos,ypos,zpos), vec3(50,50,50));
   
 	glutSwapBuffers();
+  
 }
 
 int main(int argc, char* argv[]) {
