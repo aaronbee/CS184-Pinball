@@ -14,7 +14,7 @@ vec3 pos;
 vec3 marble_pos;
 float foot_height;
 bool wireframe_foot;
-bool updateLight0, updateLight1;
+bool lights_on;
 int w, h;
 
 bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
@@ -103,6 +103,16 @@ void keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'e':
 			foot_move = !foot_move;
+			break;
+		case 'l':
+			if (lights_on) {
+				glDisable(GL_LIGHT0);
+//				glDisable(GL_LIGHT1);
+			} else {
+				glEnable(GL_LIGHT0);
+//				glEnable(GL_LIGHT1);
+			}
+			lights_on = !lights_on;
 			break;
 		case 'w':
 			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
@@ -428,6 +438,7 @@ void move_marble() {
 void move_foot() {
 	if (ball_foot_under_collision()) {
 		foot_up = true;
+		foot_height += marble_speed;
 		return;
 	}
 	if (!foot_move)
@@ -482,6 +493,7 @@ void init() {
 	foot_height = 1;
 	foot_up = true;
 	foot_move = false;
+	lights_on = true;
   
   //lighting
   
