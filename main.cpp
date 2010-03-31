@@ -310,6 +310,13 @@ void draw_ramp(float x, float y, float z) {
 	glPopMatrix();
 }
 
+void draw_marble() {
+	glPushMatrix();
+	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
+	glutSolidSphere(0.5, 10, 10);
+	glPopMatrix();
+}
+
 void init() {
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
@@ -404,11 +411,7 @@ void display() {
 	
 	draw_ramp(-2, -3, 0);
 	
-	glPushMatrix();
-	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
-	glutSolidSphere(0.5, 10, 10);
-	glPopMatrix();
-  
+	draw_marble();
   
   tex = new TGAImage();
 	
