@@ -21,6 +21,13 @@ bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
 int oldx = 0, oldy = 0 ; // For mouse motion
 
 Image* tex;
+Image* tex1;
+Image* tex2;
+Image* tex3;
+Image* tex4;
+Image* tex5;
+Image* tex6;
+
 unsigned int e_nindices;
 unsigned int p_nindices;
 unsigned int *e_indices;
@@ -185,6 +192,7 @@ void reshape(int width, int height){
 
 void RenderSkybox(vec3 position,vec3 size)
 {	
+  glEnable(GL_TEXTURE_2D);
 	// Begin DrawSkybox
 	glColor4f(1.0, 1.0, 1.0,1.0f);
   
@@ -201,9 +209,8 @@ void RenderSkybox(vec3 position,vec3 size)
 	float r = 1.0f; // If you have border issues change this to 1.005f
 	// Common Axis Z - FRONT Side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[4]);
-  tex->open("2.tga");
-	tex->updateTexture();
-  
+
+  tex2->updateTexture();
 	glBegin(GL_QUADS);	
   glTexCoord2f(cx, cz); glVertex3f(-r ,1.0f,-r);
   glTexCoord2f(cx,  cx); glVertex3f(-r,1.0f,r);
@@ -214,8 +221,7 @@ void RenderSkybox(vec3 position,vec3 size)
   
 	// Common Axis Z - BACK side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[5]);
-  tex->open("1.tga");
-	tex->updateTexture();
+  tex1->updateTexture();
 	glBegin(GL_QUADS);		
   glTexCoord2f(cx,cz);  glVertex3f(-r,-1.0f,-r);
   glTexCoord2f(cx,cx);  glVertex3f(-r,-1.0f, r);
@@ -225,8 +231,8 @@ void RenderSkybox(vec3 position,vec3 size)
   
 	// Common Axis X - Left side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[3]);
-  tex->open("3.tga");
-	tex->updateTexture();
+
+  tex3->updateTexture();
 	glBegin(GL_QUADS);		
   glTexCoord2f(cx,cx); glVertex3f(-1.0f, -r, r);	
   glTexCoord2f(cz,cx); glVertex3f(-1.0f,  r, r); 
@@ -236,8 +242,7 @@ void RenderSkybox(vec3 position,vec3 size)
   
 	// Common Axis X - Right side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[2]);
-  tex->open("4.tga");
-	tex->updateTexture();
+  tex4->updateTexture();
 	glBegin(GL_QUADS);		
   glTexCoord2f( cx,cx); glVertex3f(1.0f, -r, r);	
   glTexCoord2f(cz, cx); glVertex3f(1.0f,  r, r); 
@@ -247,8 +252,7 @@ void RenderSkybox(vec3 position,vec3 size)
   
 	// Common Axis Y - Draw Up side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[0]);
-  tex->open("6.tga");
-	tex->updateTexture();
+  tex6->updateTexture();
 	glBegin(GL_QUADS);		
   glTexCoord2f(cz, cz); glVertex3f( r, -r,1.0f);
   glTexCoord2f(cx, cz); glVertex3f( r,  r,1.0f); 
@@ -258,8 +262,7 @@ void RenderSkybox(vec3 position,vec3 size)
   
 	// Common Axis Y - Down side
 	//glBindTexture(GL_TEXTURE_2D,SkyBox[1]);
-  tex->open("5.tga");
-	tex->updateTexture();
+  tex5->updateTexture();
 	glBegin(GL_QUADS);		
   glTexCoord2f(cz,cz);  glVertex3f( r, -r,-1.0f);
   glTexCoord2f( cx,cz); glVertex3f( r,  r,-1.0f); 
@@ -269,7 +272,7 @@ void RenderSkybox(vec3 position,vec3 size)
  
 	// Load Saved Matrix
 	glPopMatrix();
- 
+ glDisable(GL_TEXTURE_2D);
 };
 
 
@@ -410,6 +413,26 @@ void move_marble() {
 }
 
 void init() {
+  
+  GLuint texture;
+  glGenTextures( 1, &texture );
+  
+  //textures
+  tex = new TGAImage();
+  tex1 = new TGAImage();
+  tex2 = new TGAImage();
+  tex3 = new TGAImage();
+  tex4 = new TGAImage();
+  tex5 = new TGAImage();
+  tex6 = new TGAImage();
+  tex1->open("1.tga");
+  tex2->open("2.tga");
+  tex3->open("3.tga");
+  tex4->open("4.tga");
+  tex5->open("5.tga");
+  tex6->open("6.tga");
+  
+  
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
 	right = vec3(1, 0, 0);
@@ -469,7 +492,7 @@ void init() {
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnable(GL_TEXTURE_2D);
+	
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
 
@@ -526,7 +549,7 @@ void display() {
 	
 	draw_marble();
   
-  tex = new TGAImage();
+  
 	
   
   /*
