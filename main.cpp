@@ -29,6 +29,7 @@ Image* tex3;
 Image* tex4;
 Image* tex5;
 Image* tex6;
+Image* ground;
 
 unsigned int e_nindices;
 unsigned int p_nindices;
@@ -468,6 +469,8 @@ void init() {
   tex5->open("5.tga");
   tex6->open("6.tga");
   
+  ground = new TGAImage();
+  ground->open("ground.tga");
   
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
@@ -612,16 +615,18 @@ void display() {
 	
 	draw_marble();
   
-  
+
 	
-  
-  /*
+  glEnable(GL_TEXTURE_2D);
+  ground->updateTexture();
 	glBegin( GL_QUADS );
 		glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4);
 		glTexCoord2d(40.0,0.0); glVertex3d(50.0,-50.0, -1.4);
 		glTexCoord2d(40.0,40.0); glVertex3d(50.0,50.0, -1.4);
 		glTexCoord2d(0.0,40.0); glVertex3d(-50.0,50.0, -1.4);
 	glEnd();
+  glDisable(GL_TEXTURE_2D);
+  /*
   
   glBegin( GL_QUADS );
     glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
