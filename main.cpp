@@ -12,11 +12,13 @@ vec3 up;
 vec3 right;
 vec3 pos;
 vec3 marble_pos;
+float foot_height;
 bool wireframe_foot;
 bool updateLight0, updateLight1;
 int w, h;
 
 bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
+bool foot_up, foot_move;
 
 int oldx = 0, oldy = 0 ; // For mouse motion
 
@@ -75,6 +77,7 @@ GLfloat blueish[] = {0, 0, 0.3, 1};
 GLfloat yellow[] = {0.7, 0.7, 0, 1};
 GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
+GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
 
 
 void printHelp() {
@@ -96,6 +99,9 @@ void keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'q':
 			wireframe_foot = !wireframe_foot;
+			break;
+		case 'e':
+			foot_move = !foot_move;
 			break;
 		case 'w':
 			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
@@ -309,10 +315,10 @@ void draw_plunger(float x, float y, float z) {
 void draw_foot(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, f_normaldata);
-	
-	GLfloat red_emissive[] = {1.0, 0.0, 0.0, 1.0};
-	
-	glMaterialfv(GL_FRONT, GL_EMISSION, red_emissive);
+		
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, foot_color);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, foot_color);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, foot_color);
 	
 	glPushMatrix();
 	glTranslatef(x, y, z);
@@ -322,7 +328,10 @@ void draw_foot(float x, float y, float z) {
 	if (wireframe_foot)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
-	glMaterialfv(GL_FRONT, GL_EMISSION, zero);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
 }
 
 void draw_bumper(float x, float y, float z) {
@@ -363,9 +372,23 @@ void draw_marble() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
 }
 
+bool ball_foot_side_collision() {
+	return (foot_height < 2 &&
+			marble_pos.y > 1.19 && marble_pos.y < 1.21 &&
+			marble_pos.x > 0.98 && marble_pos.x < 0.99);
+}
+
+bool ball_foot_under_collision() {
+	return (marble_pos.y > 1.19 && marble_pos.y < 1.21 &&
+			marble_pos.x > -0.98 && marble_pos.x < 0.98 &&
+			foot_height < 2);
+}
+
 float marble_speed = 0.01;
 
 void move_marble() {
+	if (ball_foot_side_collision())
+		return;
 	if (marble_pos.x >= 1.2) {
 		marble_pos.x = 1.2;
 		if (marble_pos.y >= -1)
@@ -399,8 +422,30 @@ void move_marble() {
 		if (marble_pos.x > 1.19)
 			bumper4_lit = true;
 	}
-	glutPostRedisplay();
+}
 
+void move_foot() {
+	if (ball_foot_under_collision()) {
+		foot_up = true;
+		return;
+	}
+	if (!foot_move)
+		return;
+	if (foot_up) {
+		foot_height += marble_speed;
+		if (foot_height > 5)
+			foot_up = false;
+	} else {
+		foot_height -= marble_speed;
+		if (foot_height < 1)
+			foot_up = true;
+	}
+}
+
+void animation() {
+	move_foot();
+	move_marble();
+	glutPostRedisplay();
 }
 
 void init() {
@@ -431,6 +476,9 @@ void init() {
 	amount = 3;
 	marble_pos = vec3(1.2, 1.2, 0);
 	wireframe_foot = false;
+	foot_height = 1;
+	foot_up = true;
+	foot_move = false;
   
   //lighting
   
@@ -501,7 +549,7 @@ void display() {
 
 	draw_plunger(2, 0, 5);
 
-	draw_foot(-0.5, 0, 2);
+	draw_foot(0, 2, foot_height);
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, reddish);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, reddish);
@@ -623,7 +671,7 @@ int main(int argc, char* argv[]) {
 //	glutMouseFunc(mouse);
 	glutPassiveMotionFunc(mouse);
 	glutMotionFunc(drag);
-	glutIdleFunc(move_marble);
+	glutIdleFunc(animation);
 	printHelp();
 	glutMainLoop();
 	return 0;
