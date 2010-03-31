@@ -12,6 +12,7 @@ vec3 up;
 vec3 right;
 vec3 pos;
 vec3 ball_pos;
+bool wireframe_foot;
 bool updateLight0, updateLight1;
 int w, h;
 
@@ -69,6 +70,9 @@ void keyboard(unsigned char key, int x, int y) {
 			amount--;
 			if (amount == 0) amount = 1;
 			printf("amount set to %d\n", amount);
+			break;
+		case 'q':
+			wireframe_foot = !wireframe_foot;
 			break;
 		case 'w':
 			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
@@ -259,8 +263,8 @@ void init() {
 	right = vec3(1, 0, 0);
 	pos = vec3(0, 0, 0);
 	amount = 3;
-	ball_pos = vec3(0, 0, 0);
-
+	ball_pos = vec3(0, 0, -2);
+	wireframe_foot = false;
   
   //lighting
   
@@ -320,6 +324,7 @@ void init() {
 	LoadObjModel( "crazyfoot.obj", f_nverts, f_nindices, f_indices,
 				 f_vertexdata, f_normaldata, f_tangendata, f_binormdata, f_texcoords );
 
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -360,7 +365,11 @@ void display() {
 	
 	glPushMatrix();
 	glTranslatef(-0.5, 0, 2);
+	if (wireframe_foot)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
+	if (wireframe_foot)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 	
 	glVertexPointer(3, GL_FLOAT, 0, b_vertexdata);
@@ -381,7 +390,7 @@ void display() {
 	
 	glPushMatrix();
 	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
-	glutSolidSphere(1, 15, 15);
+	glutSolidSphere(0.5, 10, 10);
 	glPopMatrix();
   
   
