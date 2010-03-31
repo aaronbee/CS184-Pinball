@@ -80,6 +80,21 @@ GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
 
+GLfloat one[] = {1, 1, 1, 1};
+GLfloat medium[] = {0.5, 0.5, 0.5, 1};
+GLfloat small[] = {0.2, 0.2, 0.2, 1};
+GLfloat high[] = {100};
+GLfloat light_specular[] = {1, 1, 1, 1};
+GLfloat light_position[] = {0, 1, 1, 0};
+
+// Disco lights
+GLfloat disco_light_pos[] = {0, 0, 4, 1};
+GLfloat disco_light1_dir[] = {0.5, 0, -1};
+GLfloat disco_light2_dir[] = {0, 0.5, -1};
+GLfloat disco_light3_dir[] = {-0.5, 0, -1};
+GLfloat disco_light4_dir[] = {0, -0.5, -1};
+GLfloat cutoff_angle = 30.0;
+
 void printHelp() {
 	printf("press '+' or '-' to change the amount of rotation that\noccurs with each arrow press.\n");
 }
@@ -459,6 +474,41 @@ void animation() {
 	glutPostRedisplay();
 }
 
+void place_lights() {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, medium);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
+	
+	glLightfv(GL_LIGHT1, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT2, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT3, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT4, GL_POSITION, disco_light_pos);
+	
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, cutoff_angle);
+	
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, disco_light1_dir);
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, disco_light2_dir);
+	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, disco_light3_dir);
+	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, disco_light4_dir);
+	
+	glLightfv(GL_LIGHT1, GL_AMBIENT, zero);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, reddish);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, zero);
+	
+	if (lights_on) {
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+	}
+}
+
 void init() {
   
   GLuint texture;
@@ -494,58 +544,7 @@ void init() {
 	foot_move = false;
 	lights_on = true;
   
-  //lighting
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity;
-  
-	glEnable(GL_LIGHTING);
-  
-  
-    GLfloat one[] = {1, 1, 1, 1};
-    GLfloat medium[] = {0.5, 0.5, 0.5, 1};
-    GLfloat small[] = {0.2, 0.2, 0.2, 1};
-    GLfloat high[] = {100};
-    GLfloat light_specular[] = {1, 1, 1, 1};
-    GLfloat light_specular1[] = {0, 0.5, 1, 1};
-    GLfloat light_position[] = {0, 1, 1, 0};
-    GLfloat light_position1[] = {5, -5, 0, 1};
-	
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, medium);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
-	glEnable(GL_LIGHT0);
-	
-	// Disco lights
-	GLfloat disco_light_pos[] = {0, 0, 4, 1};
-	GLfloat disco_light1_dir[] = {0.5, 0, -1};
-	GLfloat disco_light2_dir[] = {0, 0.5, -1};
-	GLfloat disco_light3_dir[] = {-0.5, 0, -1};
-	GLfloat disco_light4_dir[] = {0, -0.5, -1};
-	GLfloat cutoff_angle = 30.0;
-	
-	glLightfv(GL_LIGHT1, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT2, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT3, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT4, GL_POSITION, disco_light_pos);
-
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, cutoff_angle);
-	
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, disco_light1_dir);
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, disco_light2_dir);
-	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, disco_light3_dir);
-	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, disco_light4_dir);
-	
-	glLightfv(GL_LIGHT1, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, reddish);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, reddish);
-	
-	glEnable(GL_LIGHT1);
+	reshape(w,h);
 	
 	glMaterialfv(GL_FRONT, GL_AMBIENT, one);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
@@ -577,15 +576,16 @@ void init() {
 void display() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	reshape(w, h);
 	glMatrixMode(GL_MODELVIEW);
 	glEnableClientState(GL_NORMAL_ARRAY);
 //	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glLoadIdentity();
 	
-	glDisable(GL_LIGHTING);
-	
 	camera();
 	
+
 	glEnable(GL_LIGHTING);
 	//draw_elephant(2.5, 0, 0);
 
@@ -697,7 +697,11 @@ void display() {
   */
   
   RenderSkybox(pos, vec3(50,50,50));
-  
+  	
+	place_lights();
+	
+	glDisable(GL_LIGHTING);
+	
 	glutSwapBuffers();
   
 }
