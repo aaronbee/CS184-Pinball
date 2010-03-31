@@ -11,10 +11,12 @@ vec3 look;
 vec3 up;
 vec3 right;
 vec3 pos;
-vec3 ball_pos;
+vec3 marble_pos;
 bool wireframe_foot;
 bool updateLight0, updateLight1;
 int w, h;
+
+bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
 
 int oldx = 0, oldy = 0 ; // For mouse motion
 
@@ -51,6 +53,20 @@ unsigned int *r_indices;
 unsigned int r_nverts;
 float *r_vertexdata, *r_normaldata, *r_texcoords;
 float *r_tangendata, *r_binormdata;
+
+// Colors
+GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
+GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat shiny_hi[] = {50};
+GLfloat shiny_lo[] = {5};
+GLfloat red[] = {1.0, 0, 0, 1};
+GLfloat reddish[] = {0.5, 0, 0, 1};
+GLfloat green[] = {0, 1.0, 0, 1};
+GLfloat greenish[] = {0, 0.5, 0, 1};
+GLfloat blue[] = {0, 0, 1.0, 1};
+GLfloat blueish[] = {0, 0, 0.5, 1};
+GLfloat yellow[] = {1.0, 1.0, 0, 1};
+GLfloat yellowish[] = {0.5, 0.5, 0, 1};
 
 
 
@@ -256,10 +272,6 @@ void RenderSkybox(vec3 position,vec3 size)
  
 };
 
-GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
-GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-GLfloat shiny_hi[] = {50};
-GLfloat shiny_lo[] = {5};
 
 void draw_elephant(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
@@ -272,6 +284,11 @@ void draw_elephant(float x, float y, float z) {
 }
 
 void draw_plunger(float x, float y, float z) {
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+	
 	glVertexPointer(3, GL_FLOAT, 0, p_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 	
@@ -279,6 +296,11 @@ void draw_plunger(float x, float y, float z) {
 	glTranslatef(x, y, z);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
 	glPopMatrix();
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
 }
 
 void draw_foot(float x, float y, float z) {
@@ -307,6 +329,7 @@ void draw_bumper(float x, float y, float z) {
 	
 	glPushMatrix();
 	glTranslatef(x, y, z);
+	glScalef(0.7, 0.7, 0.7);
 	glDrawElements( GL_TRIANGLES, b_nindices, GL_UNSIGNED_INT, b_indices );
 	glPopMatrix();
 }
@@ -328,7 +351,7 @@ void draw_marble() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
 	glPushMatrix();
-	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
+	glTranslatef(marble_pos.x, marble_pos.y, marble_pos.z);
 	glutSolidSphere(0.5, 10, 10);
 	glPopMatrix();
 	
@@ -338,13 +361,61 @@ void draw_marble() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
 }
 
+float marble_speed = 0.05;
+
+void move_marble() {
+	if (marble_pos.x >= 1.2) {
+		marble_pos.x = 1.2;
+		if (marble_pos.y == -1)
+			bumper4_lit = false;
+		if (marble_pos.y < 1.2) {
+			marble_pos.y += marble_speed;
+		} else {
+			bumper1_lit = true;
+			marble_pos.x -= marble_speed;
+		}
+	} else if (marble_pos.y >= 1.2) {
+		marble_pos.y = 1.2;
+		if (marble_pos.x == 1)
+			bumper1_lit = false;
+		if (marble_pos.x > -1.2) {
+			marble_pos.x -= marble_speed;
+		} else {
+			bumper2_lit = true;
+			marble_pos.y -= marble_speed;
+		}
+	} else if (marble_pos.x <= -1.2) {
+		marble_pos.x = -1.2;
+		if (marble_pos.y == 1)
+			bumper2_lit = false;
+		if (marble_pos.y > -1.2) {
+			marble_pos.y -= marble_speed;
+		} else {
+			bumper3_lit = true;
+			marble_pos.x += marble_speed;
+		}
+	} else {
+		marble_pos.y = -1.2;
+		if (marble_pos.x == -1)
+			bumper3_lit = false;
+		if (marble_pos.x < 1.2) {
+			marble_pos.x += marble_speed;
+		} else {
+			bumper4_lit = true;
+			marble_pos.y += marble_speed;
+		}
+	}
+	glutPostRedisplay();
+
+}
+
 void init() {
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
 	right = vec3(1, 0, 0);
 	pos = vec3(0, 0, 0);
 	amount = 3;
-	ball_pos = vec3(0, 0, -2);
+	marble_pos = vec3(1.2, 1.2, 0);
 	wireframe_foot = false;
   
   //lighting
@@ -356,7 +427,7 @@ void init() {
     GLfloat medium[] = {0.5, 0.5, 0.5, 1};
     GLfloat small[] = {0.2, 0.2, 0.2, 1};
     GLfloat high[] = {100};
-    GLfloat light_specular[] = {1, 0.5, 0, 1};
+    GLfloat light_specular[] = {1, 1, 1, 1};
     GLfloat light_specular1[] = {0, 0.5, 1, 1};
     GLfloat light_position[] = {5, 5, 0, 1};
     GLfloat light_position1[] = {5, -5, 0, 1};
@@ -412,15 +483,46 @@ void display() {
 	
 	camera();
 	
-	draw_elephant(2.5, 0, 0);
+	//draw_elephant(2.5, 0, 0);
 
 	draw_plunger(2, 0, 5);
 
 	draw_foot(-0.5, 0, 2);
 	
-	draw_bumper(0, -2, 0);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, reddish);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, reddish);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, reddish);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
-	draw_ramp(-2, -3, 0);
+	draw_bumper(-2, -2, 0.5);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, greenish);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, greenish);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, greenish);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+	
+	draw_bumper(-2, 2, 0.5);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, blueish);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, blueish);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, blueish);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+	
+	draw_bumper(2, -2, 0.5);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, yellowish);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, yellowish);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, yellowish);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+	
+	draw_bumper(2, 2, 0.5);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
+	
+	//draw_ramp(-2, -3, 0);
 	
 	draw_marble();
   
@@ -483,6 +585,7 @@ int main(int argc, char* argv[]) {
 //	glutMouseFunc(mouse);
 	glutPassiveMotionFunc(mouse);
 	glutMotionFunc(drag);
+	glutIdleFunc(move_marble);
 	printHelp();
 	glutMainLoop();
 	return 0;
