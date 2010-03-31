@@ -256,6 +256,59 @@ void RenderSkybox(vec3 position,vec3 size)
  
 };
 
+void draw_elephant(float x, float y, float z) {
+	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, e_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
+	glPopMatrix();
+}
+
+void draw_plunger(float x, float y, float z) {
+	glVertexPointer(3, GL_FLOAT, 0, p_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, p_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
+	glPopMatrix();
+}
+
+void draw_foot(float x, float y, float z) {
+	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, f_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	if (wireframe_foot)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
+	if (wireframe_foot)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPopMatrix();
+}
+
+void draw_bumper(float x, float y, float z) {
+	glVertexPointer(3, GL_FLOAT, 0, b_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, b_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glDrawElements( GL_TRIANGLES, b_nindices, GL_UNSIGNED_INT, b_indices );
+	glPopMatrix();
+}
+
+void draw_ramp(float x, float y, float z) {
+	glVertexPointer(3, GL_FLOAT, 0, r_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, r_normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
+	glPopMatrix();
+}
 
 void init() {
 	look = vec3(0, 1, 0);
@@ -341,52 +394,15 @@ void display() {
 	
 	camera();
 	
+	draw_elephant(2.5, 0, 0);
 
+	draw_plunger(2, 0, 5);
 
-	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
-	glNormalPointer(GL_FLOAT, 0, e_normaldata);
+	draw_foot(-0.5, 0, 2);
 	
-	glPushMatrix();
-//	glColor3f(1.0,0,0);
-	glTranslatef(2.5, 0, 0);
-	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
-	glPopMatrix();
-
-	glVertexPointer(3, GL_FLOAT, 0, p_vertexdata);
-	glNormalPointer(GL_FLOAT, 0, p_normaldata);
-
-	glPushMatrix();
-	glTranslatef(2, 0, 5);
-	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
-	glPopMatrix();
+	draw_bumper(0, -2, 0);
 	
-	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
-	glNormalPointer(GL_FLOAT, 0, f_normaldata);
-	
-	glPushMatrix();
-	glTranslatef(-0.5, 0, 2);
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glPopMatrix();
-	
-	glVertexPointer(3, GL_FLOAT, 0, b_vertexdata);
-	glNormalPointer(GL_FLOAT, 0, b_normaldata);
-	
-	glPushMatrix();
-	glTranslatef(0, -2, 0);
-	glDrawElements( GL_TRIANGLES, b_nindices, GL_UNSIGNED_INT, b_indices );
-	glPopMatrix();
-	
-	glVertexPointer(3, GL_FLOAT, 0, r_vertexdata);
-	glNormalPointer(GL_FLOAT, 0, r_normaldata);
-	
-	glPushMatrix();
-	glTranslatef(-2, -3, 0);
-	glDrawElements( GL_TRIANGLES, r_nindices, GL_UNSIGNED_INT, r_indices );
-	glPopMatrix();
+	draw_ramp(-2, -3, 0);
 	
 	glPushMatrix();
 	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
