@@ -256,6 +256,11 @@ void RenderSkybox(vec3 position,vec3 size)
  
 };
 
+GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
+GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat shiny_hi[] = {50};
+GLfloat shiny_lo[] = {5};
+
 void draw_elephant(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, e_normaldata);
@@ -280,6 +285,11 @@ void draw_foot(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, f_normaldata);
 	
+	GLfloat red_emissive[] = {1.0, 0.0, 0.0, 1.0};
+	GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
+	
+	glMaterialfv(GL_FRONT, GL_EMISSION, red_emissive);
+	
 	glPushMatrix();
 	glTranslatef(x, y, z);
 	if (wireframe_foot)
@@ -288,6 +298,7 @@ void draw_foot(float x, float y, float z) {
 	if (wireframe_foot)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
+	glMaterialfv(GL_FRONT, GL_EMISSION, zero);
 }
 
 void draw_bumper(float x, float y, float z) {
@@ -311,10 +322,20 @@ void draw_ramp(float x, float y, float z) {
 }
 
 void draw_marble() {
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, gray);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+	
 	glPushMatrix();
 	glTranslatef(ball_pos.x, ball_pos.y, ball_pos.z);
 	glutSolidSphere(0.5, 10, 10);
 	glPopMatrix();
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
 }
 
 void init() {
@@ -353,22 +374,12 @@ void init() {
     glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
   
 
-  
-	glEnable(GL_COLOR_MATERIAL);
-	glColorMaterial(GL_AMBIENT, GL_DIFFUSE);
-
 	glMaterialfv(GL_FRONT, GL_AMBIENT, one);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, small);
 	glMaterialfv(GL_FRONT, GL_SHININESS, high);
 	
-	
 
-	
-
-  
-  
-  
 	LoadObjModel( "elephant2.obj", e_nverts, e_nindices, e_indices,
 				 e_vertexdata, e_normaldata, e_tangendata, e_binormdata, e_texcoords );
 
