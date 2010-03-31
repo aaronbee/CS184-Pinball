@@ -59,15 +59,15 @@ GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
 GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat shiny_hi[] = {50};
 GLfloat shiny_lo[] = {5};
-GLfloat red[] = {1.0, 0, 0, 1};
-GLfloat reddish[] = {0.5, 0, 0, 1};
-GLfloat green[] = {0, 1.0, 0, 1};
-GLfloat greenish[] = {0, 0.5, 0, 1};
-GLfloat blue[] = {0, 0, 1.0, 1};
-GLfloat blueish[] = {0, 0, 0.5, 1};
-GLfloat yellow[] = {1.0, 1.0, 0, 1};
-GLfloat yellowish[] = {0.5, 0.5, 0, 1};
-
+GLfloat red[] = {0.7, 0, 0, 1};
+GLfloat reddish[] = {0.3, 0, 0, 1};
+GLfloat green[] = {0, 0.7, 0, 1};
+GLfloat greenish[] = {0, 0.3, 0, 1};
+GLfloat blue[] = {0, 0, 0.7, 1};
+GLfloat blueish[] = {0, 0, 0.3, 1};
+GLfloat yellow[] = {0.7, 0.7, 0, 1};
+GLfloat yellowish[] = {0.3, 0.3, 0, 1};
+GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 
 
 void printHelp() {
@@ -308,7 +308,6 @@ void draw_foot(float x, float y, float z) {
 	glNormalPointer(GL_FLOAT, 0, f_normaldata);
 	
 	GLfloat red_emissive[] = {1.0, 0.0, 0.0, 1.0};
-	GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 	
 	glMaterialfv(GL_FRONT, GL_EMISSION, red_emissive);
 	
@@ -361,49 +360,41 @@ void draw_marble() {
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
 }
 
-float marble_speed = 0.05;
+float marble_speed = 0.01;
 
 void move_marble() {
 	if (marble_pos.x >= 1.2) {
 		marble_pos.x = 1.2;
-		if (marble_pos.y == -1)
+		if (marble_pos.y >= -1)
 			bumper4_lit = false;
-		if (marble_pos.y < 1.2) {
+		if (marble_pos.y < 1.2) 
 			marble_pos.y += marble_speed;
-		} else {
+		if (marble_pos.y > 1.19)
 			bumper1_lit = true;
-			marble_pos.x -= marble_speed;
-		}
-	} else if (marble_pos.y >= 1.2) {
+	} if (marble_pos.y >= 1.2) {
 		marble_pos.y = 1.2;
-		if (marble_pos.x == 1)
+		if (marble_pos.x <= 1)
 			bumper1_lit = false;
-		if (marble_pos.x > -1.2) {
+		if (marble_pos.x > -1.2)
 			marble_pos.x -= marble_speed;
-		} else {
+		if (marble_pos.x < -1.19)
 			bumper2_lit = true;
-			marble_pos.y -= marble_speed;
-		}
-	} else if (marble_pos.x <= -1.2) {
+	} if (marble_pos.x <= -1.2) {
 		marble_pos.x = -1.2;
-		if (marble_pos.y == 1)
+		if (marble_pos.y <= 1)
 			bumper2_lit = false;
-		if (marble_pos.y > -1.2) {
+		if (marble_pos.y > -1.2)
 			marble_pos.y -= marble_speed;
-		} else {
+		if (marble_pos.y < -1.19)
 			bumper3_lit = true;
-			marble_pos.x += marble_speed;
-		}
-	} else {
+	} if (marble_pos.y <= -1.2) {
 		marble_pos.y = -1.2;
-		if (marble_pos.x == -1)
+		if (marble_pos.x >= -1)
 			bumper3_lit = false;
-		if (marble_pos.x < 1.2) {
+		if (marble_pos.x < 1.2) 
 			marble_pos.x += marble_speed;
-		} else {
+		if (marble_pos.x > 1.19)
 			bumper4_lit = true;
-			marble_pos.y += marble_speed;
-		}
 	}
 	glutPostRedisplay();
 
@@ -494,28 +485,52 @@ void display() {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, reddish);
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
-	draw_bumper(-2, -2, 0.5);
+	if (bumper1_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, red);
+
+	draw_bumper(2, 2, 0.5);
+	
+	if (bumper1_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, zero);
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, greenish);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, greenish);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, greenish);
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
+	if (bumper2_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, green);
+	
 	draw_bumper(-2, 2, 0.5);
+	
+	if (bumper2_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, zero);
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, blueish);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, blueish);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, blueish);
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
-	draw_bumper(2, -2, 0.5);
+	if (bumper3_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, blue);
+	
+	draw_bumper(-2, -2, 0.5);
+	
+	if (bumper3_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, zero);
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, yellowish);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, yellowish);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, yellowish);
 	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
 	
-	draw_bumper(2, 2, 0.5);
+	if (bumper4_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, yellow);
+	
+	draw_bumper(2, -2, 0.5);
+	
+	if (bumper4_lit) 
+		glMaterialfv(GL_FRONT, GL_EMISSION, zero);
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
