@@ -14,7 +14,8 @@ vec3 pos;
 vec3 marble_pos;
 float foot_height;
 bool wireframe_foot;
-bool lights_on;
+bool light0_on;
+bool all_lights_off;
 int w, h;
 
 bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
@@ -164,14 +165,24 @@ void keyboard(unsigned char key, int x, int y) {
 			foot_move = !foot_move;
 			break;
 		case 'l':
-			if (lights_on) {
+			if (light0_on) {
 				glDisable(GL_LIGHT0);
-//				glDisable(GL_LIGHT1);
+				light0_on = false;
+			} else if (!all_lights_off) {
+				glDisable(GL_LIGHT1);
+				glDisable(GL_LIGHT2);
+				glDisable(GL_LIGHT3);
+				glDisable(GL_LIGHT4);
+				all_lights_off = true;
 			} else {
 				glEnable(GL_LIGHT0);
-//				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT2);
+				glEnable(GL_LIGHT3);
+				glEnable(GL_LIGHT4);
+				light0_on = true;
+				all_lights_off = false;
 			}
-			lights_on = !lights_on;
 			break;
 		case 'w':
 			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
@@ -709,7 +720,7 @@ void place_lights(const GLfloat view_matrix[]) {
 	
 	glPopMatrix();
 	
-	if (lights_on) {
+	if (light0_on) {
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 		glEnable(GL_LIGHT2);
@@ -751,7 +762,7 @@ void init() {
 	foot_height = 1;
 	foot_up = true;
 	foot_move = false;
-	lights_on = true;
+	light0_on = true;
   
 	reshape(w,h);
 	
