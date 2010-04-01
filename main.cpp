@@ -43,6 +43,13 @@ float *p_vertexdata, *p_normaldata, *p_texcoords;
 float *e_tangendata, *e_binormdata;
 float *p_tangendata, *p_binormdata; //you can ignore these two
 
+// Ground variables
+unsigned int g_nindices; 
+unsigned int *g_indices;
+unsigned int g_nverts;
+float *g_vertexdata, *g_normaldata, *g_texcoords;
+float *g_tangendata, *g_binormdata;
+
 // Bumper variables
 unsigned int b_nindices; 
 unsigned int *b_indices;
@@ -63,6 +70,41 @@ unsigned int *r_indices;
 unsigned int r_nverts;
 float *r_vertexdata, *r_normaldata, *r_texcoords;
 float *r_tangendata, *r_binormdata;
+
+//Number Variables
+unsigned int one_nindices;
+unsigned int *one_indices;
+unsigned int one_nverts;
+float *one_vertexdata, *one_normaldata, *one_texcoords, *one_tangendata, *one_binormdata;
+
+unsigned int two_nindices;
+unsigned int *two_indices;
+unsigned int two_nverts;
+float *two_vertexdata, *two_normaldata, *two_texcoords, *two_tangendata, *two_binormdata;
+unsigned int three_nindices;
+unsigned int *three_indices;
+unsigned int three_nverts;
+float *three_vertexdata, *three_normaldata, *three_texcoords, *three_tangendata, *three_binormdata;
+unsigned int four_nindices;
+unsigned int *four_indices;
+unsigned int four_nverts;
+float *four_vertexdata, *four_normaldata, *four_texcoords, *four_tangendata, *four_binormdata;
+unsigned int five_nindices;
+unsigned int *five_indices;
+unsigned int five_nverts;
+float *five_vertexdata, *five_normaldata, *five_texcoords, *five_tangendata, *five_binormdata;
+unsigned int six_nindices;
+unsigned int *six_indices;
+unsigned int six_nverts;
+float *six_vertexdata, *six_normaldata, *six_texcoords, *six_tangendata, *six_binormdata;
+unsigned int seven_nindices;
+unsigned int *seven_indices;
+unsigned int seven_nverts;
+float *seven_vertexdata, *seven_normaldata, *seven_texcoords, *seven_tangendata, *seven_binormdata;
+unsigned int eight_nindices;
+unsigned int *eight_indices;
+unsigned int eight_nverts;
+float *eight_vertexdata, *eight_normaldata, *eight_texcoords, *eight_tangendata, *eight_binormdata;
 
 // Colors
 GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
@@ -291,6 +333,117 @@ void RenderSkybox(vec3 position,vec3 size)
  glDisable(GL_TEXTURE_2D);
 };
 
+void draw_ground() {
+  glEnable(GL_TEXTURE_2D);
+  ground->updateTexture();
+
+  
+  //ground->updateTexture();
+	glBegin( GL_QUADS );
+  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4); 
+  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(16.0,0.0); glVertex3d(50.0,-50.0, -1.4);
+  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(16.0,16.0); glVertex3d(50.0,50.0, -1.4);
+  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(0.0,16.0); glVertex3d(-50.0,50.0, -1.4);
+	glEnd();
+  glDisable(GL_TEXTURE_2D);
+  
+
+}
+
+void draw_seven() {
+  glEnable(GL_TEXTURE_2D);
+  glBegin(GL_QUADS);
+  
+  ground->updateTexture();
+  //top half of sandwich
+  glNormal3d(0.0,0.0,1.0);
+  glVertex3d(0.0,0.0,3.0);
+  glVertex3d(1.0,0.0,3.0);
+  glVertex3d(3.0,4.0,3.0);
+  glVertex3d(2.0,4.0,3.0);
+  
+  glVertex3d(0.0,4.0,3.0);
+  glVertex3d(0.0,5.0,3.0);
+  glVertex3d(3.0,5.0,3.0);
+  glVertex3d(3.0,4.0,3.0);
+  
+  
+  //bottom half of sandwich
+  glNormal3d(0.0,0.0,-1.0);
+  glVertex3d(0.0,0.0,2.0);
+  glVertex3d(1.0,0.0,2.0);
+  glVertex3d(3.0,4.0,2.0);
+  glVertex3d(2.0,4.0,2.0);
+  
+  glVertex3d(0.0,4.0,2.0);
+  glVertex3d(0.0,5.0,2.0);
+  glVertex3d(3.0,5.0,2.0);
+  glVertex3d(3.0,4.0,2.0);
+  
+  //start from top left
+  glNormal3d(0.0,1.0,0.0);
+  glVertex3d(0.0,5.0,3.0);
+  glVertex3d(3.0,5.0,3.0);
+  glVertex3d(3.0,5.0,2.0);
+  glVertex3d(0.0,5.0,2.0);
+  
+  glNormal3d(1.0,0.0,0.0);
+  glVertex3d(3.0,5.0,3.0);
+  glVertex3d(3.0,4.0,3.0);
+  glVertex3d(3.0,4.0,2.0);
+  glVertex3d(3.0,5.0,2.0);
+
+  glNormal3d(0.895,-0.447,0.0);
+  glVertex3d(3.0,4.0,3.0);
+  glVertex3d(1.0,0.0,3.0);
+  glVertex3d(1.0,0.0,2.0);
+  glVertex3d(3.0,4.0,2.0);
+
+  glNormal3d(0.0,-1.0,0.0);
+  glVertex3d(1.0,0.0,3.0);
+  glVertex3d(0.0,0.0,3.0);
+  glVertex3d(0.0,0.0,2.0);
+  glVertex3d(1.0,0.0,2.0);
+
+  glNormal3d(-0.895,0.447,0.0);
+  glVertex3d(0.0,0.0,3.0);
+  glVertex3d(2.0,4.0,3.0);
+  glVertex3d(2.0,4.0,2.0);
+  glVertex3d(0.0,0.0,2.0);
+  
+  glNormal3d(0.0,-1.0,0.0);
+  glVertex3d(2.0,4.0,3.0);
+  glVertex3d(0.0,4.0,3.0);
+  glVertex3d(0.0,4.0,2.0);
+  glVertex3d(2.0,4.0,2.0);
+  
+  glNormal3d(-1.0,0.0,0.0);
+  glVertex3d(0.0,4.0,3.0);
+  glVertex3d(0.0,5.0,3.0);
+  glVertex3d(0.0,5.0,2.0);
+  glVertex3d(0.0,4.0,2.0);
+  
+  glEnd();
+ glDisable(GL_TEXTURE_2D);
+}
+
+void draw_ground2(float x, float y, float z) {
+  glVertexPointer(3, GL_FLOAT, 0, g_vertexdata);
+	glNormalPointer(GL_FLOAT, 0, g_normaldata);
+  
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, foot_color);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, foot_color);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, foot_color);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+  glScalef(2.0, 2.0, 2.0);
+	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
+  glScalef(0.5, 0.5, 0.5);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+}
 
 void draw_elephant(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
@@ -299,6 +452,17 @@ void draw_elephant(float x, float y, float z) {
 	glPushMatrix();
 	glTranslatef(x, y, z);
 	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
+	glPopMatrix();
+}
+
+void draw_one(float x, float y, float z, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
+	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
+	glNormalPointer(GL_FLOAT, 0, normaldata);
+	
+	glPushMatrix();
+	glTranslatef(x, y, z);
+  glRotatef(90.0, 1.0, 0.0, 0.0);
+	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
 	glPopMatrix();
 }
 
@@ -551,6 +715,9 @@ void init() {
 	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, small);
 	glMaterialfv(GL_FRONT, GL_SHININESS, high);
+  
+  LoadObjModel( "ground.obj", g_nverts, g_nindices, g_indices,
+               g_vertexdata, g_normaldata, g_tangendata, g_binormdata, g_texcoords );
 	
 	LoadObjModel( "elephant2.obj", e_nverts, e_nindices, e_indices,
 				 e_vertexdata, e_normaldata, e_tangendata, e_binormdata, e_texcoords );
@@ -567,6 +734,18 @@ void init() {
 	LoadObjModel( "crazyfoot.obj", f_nverts, f_nindices, f_indices,
 				 f_vertexdata, f_normaldata, f_tangendata, f_binormdata, f_texcoords );
 
+  LoadObjModel( "1.obj", one_nverts, one_nindices, one_indices, one_vertexdata, one_normaldata, one_tangendata, one_binormdata, one_texcoords );
+  LoadObjModel( "2.obj", two_nverts, two_nindices, two_indices, two_vertexdata, two_normaldata, two_tangendata, two_binormdata, two_texcoords );
+  LoadObjModel( "3.obj", three_nverts, three_nindices, three_indices, three_vertexdata, three_normaldata, three_tangendata, three_binormdata, three_texcoords );
+  LoadObjModel( "4.obj", four_nverts, four_nindices, four_indices, four_vertexdata, four_normaldata, four_tangendata, four_binormdata, four_texcoords );
+  LoadObjModel( "5.obj", five_nverts, five_nindices, five_indices, five_vertexdata, five_normaldata, five_tangendata, five_binormdata, five_texcoords );
+  LoadObjModel( "6.obj", six_nverts, six_nindices, six_indices, six_vertexdata, six_normaldata, six_tangendata, six_binormdata, six_texcoords );
+  LoadObjModel( "8.obj", eight_nverts, eight_nindices, eight_indices, eight_vertexdata, eight_normaldata, eight_tangendata, eight_binormdata, eight_texcoords );
+  
+  
+  
+  
+  
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -653,18 +832,20 @@ void display() {
 	//draw_ramp(-2, -3, 0);
 	
 	draw_marble();
-  
+  draw_one(10,0,0, one_vertexdata, one_normaldata, one_nindices, one_indices);
+  draw_one(12,0,0, two_vertexdata, two_normaldata, two_nindices, two_indices);
+  draw_one(14,0,0, three_vertexdata, three_normaldata, three_nindices, three_indices);
+  draw_one(16,0,0, four_vertexdata, four_normaldata, four_nindices, four_indices);
+  draw_one(18,0,0, five_vertexdata, five_normaldata, five_nindices, five_indices);
+  draw_one(20,0,0, six_vertexdata, six_normaldata, six_nindices, six_indices);
+  draw_one(22,0,0, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
 
-	
-  glEnable(GL_TEXTURE_2D);
-  ground->updateTexture();
-	glBegin( GL_QUADS );
-		glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4);
-		glTexCoord2d(40.0,0.0); glVertex3d(50.0,-50.0, -1.4);
-		glTexCoord2d(40.0,40.0); glVertex3d(50.0,50.0, -1.4);
-		glTexCoord2d(0.0,40.0); glVertex3d(-50.0,50.0, -1.4);
-	glEnd();
-  glDisable(GL_TEXTURE_2D);
+
+
+	draw_elephant(-4.0,-4.0,0.0);
+  draw_ground();
+  draw_seven();
+  //draw_ground2(0.0,0.0,0.0);
   /*
   
   glBegin( GL_QUADS );
