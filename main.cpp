@@ -13,7 +13,7 @@ vec3 right;
 vec3 pos;
 vec3 marble_pos;
 float foot_height;
-bool wireframe_foot;
+bool wireframe_plunger;
 bool light0_on;
 bool all_lights_off;
 int w, h;
@@ -159,9 +159,9 @@ void keyboard(unsigned char key, int x, int y) {
 			printf("amount set to %d\n", amount);
 			break;
 		case 'q':
-			wireframe_foot = !wireframe_foot;
+			wireframe_plunger = !wireframe_plunger;
 			break;
-		case 'e':
+		case 'f':
 			foot_move = !foot_move;
 			break;
 		case 'l':
@@ -513,10 +513,14 @@ void draw_plunger(float x, float y, float z) {
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 	
 	glPushMatrix();
+	if (wireframe_plunger)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glTranslatef(x, y, z);
 	glRotatef(-disco_rotation, 0, 0, 1);
 	glRotatef(-90, 0, 1, 0);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
+	if (wireframe_plunger)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
@@ -535,11 +539,7 @@ void draw_foot(float x, float y, float z) {
 	
 	glPushMatrix();
 	glTranslatef(x, y, z);
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
@@ -758,7 +758,7 @@ void init() {
 	pos = vec3(0, -7, 4);
 	amount = 3;
 	marble_pos = vec3(1.2, 1.2, 0);
-	wireframe_foot = false;
+	wireframe_plunger = false;
 	foot_height = 1;
 	foot_up = true;
 	foot_move = false;
