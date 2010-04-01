@@ -122,6 +122,22 @@ GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
 
+GLfloat one[] = {1, 1, 1, 1};
+GLfloat medium[] = {0.5, 0.5, 0.5, 1};
+GLfloat small[] = {0.2, 0.2, 0.2, 1};
+GLfloat high[] = {100};
+GLfloat light_specular[] = {1, 1, 1, 1};
+GLfloat light_position[] = {0, 1, 1, 0};
+
+// Disco lights
+GLfloat disco_light_pos[] = {0, 0, 4, 1};
+GLfloat disco_light1_dir[] = {0.5, 0, -1};
+GLfloat disco_light2_dir[] = {0, 0.5, -1};
+GLfloat disco_light3_dir[] = {-0.5, 0, -1};
+GLfloat disco_light4_dir[] = {0, -0.5, -1};
+GLfloat cutoff_angle = 30.0;
+GLfloat disco_rotation = 0;
+
 void printHelp() {
 	printf("press '+' or '-' to change the amount of rotation that\noccurs with each arrow press.\n");
 }
@@ -340,10 +356,15 @@ void draw_ground() {
   
   //ground->updateTexture();
 	glBegin( GL_QUADS );
-  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(0.0,0.0); glVertex3d(-50.0,-50.0, -1.4); 
-  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(16.0,0.0); glVertex3d(50.0,-50.0, -1.4);
-  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(16.0,16.0); glVertex3d(50.0,50.0, -1.4);
-  glNormal3d(0.0,0.0,1.0) ;glTexCoord2d(0.0,16.0); glVertex3d(-50.0,50.0, -1.4);
+  glNormal3d(0.0,0.0,1.0) ;
+  glTexCoord2d(0.0,0.0); 
+  glVertex3d(-50.0,-50.0, -1.4); 
+glTexCoord2d(16.0,0.0); 
+  glVertex3d(50.0,-50.0, -1.4);
+glTexCoord2d(16.0,16.0); 
+  glVertex3d(50.0,50.0, -1.4);
+glTexCoord2d(0.0,16.0); 
+  glVertex3d(-50.0,50.0, -1.4);
 	glEnd();
   glDisable(GL_TEXTURE_2D);
   
@@ -431,18 +452,12 @@ void draw_ground2(float x, float y, float z) {
   glVertexPointer(3, GL_FLOAT, 0, g_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, g_normaldata);
   
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, foot_color);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, foot_color);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, foot_color);
-	
 	glPushMatrix();
 	glTranslatef(x, y, z);
   glScalef(2.0, 2.0, 2.0);
 	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
   glScalef(0.5, 0.5, 0.5);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+
 }
 
 void draw_elephant(float x, float y, float z) {
@@ -617,10 +632,77 @@ void move_foot() {
 	}
 }
 
+void rotate_disco_lights() {
+	disco_rotation ++;
+	if (disco_rotation >= 360)
+		disco_rotation -= 360;
+}
+
 void animation() {
 	move_foot();
 	move_marble();
+	rotate_disco_lights();
 	glutPostRedisplay();
+}
+
+void move_light(const GLfloat old_pos[], GLfloat new_pos[]) {
+	new_pos[0] = old_pos[0] - pos.x;
+	new_pos[1] = old_pos[1] - pos.y;
+	new_pos[2] = old_pos[2] - pos.z;
+	new_pos[3] = old_pos[3];
+}
+
+void place_lights(const GLfloat view_matrix[]) {
+
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, medium);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
+	
+	glPushMatrix();
+	glRotatef(disco_rotation, 0, 0, 1);
+	
+	glLightfv(GL_LIGHT1, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT2, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT3, GL_POSITION, disco_light_pos);
+	glLightfv(GL_LIGHT4, GL_POSITION, disco_light_pos);
+	
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, cutoff_angle);
+	glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, cutoff_angle);
+	
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, disco_light1_dir);
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, disco_light2_dir);
+	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, disco_light3_dir);
+	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, disco_light4_dir);
+	
+	glLightfv(GL_LIGHT1, GL_AMBIENT, zero);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, reddish);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, reddish);
+	
+	glLightfv(GL_LIGHT2, GL_AMBIENT, zero);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, greenish);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, greenish);
+	
+	glLightfv(GL_LIGHT3, GL_AMBIENT, zero);
+	glLightfv(GL_LIGHT3, GL_DIFFUSE, blueish);
+	glLightfv(GL_LIGHT3, GL_SPECULAR, blueish);
+	
+	glLightfv(GL_LIGHT4, GL_AMBIENT, zero);
+	glLightfv(GL_LIGHT4, GL_DIFFUSE, yellowish);
+	glLightfv(GL_LIGHT4, GL_SPECULAR, yellowish);
+	
+	glPopMatrix();
+	
+	if (lights_on) {
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+		glEnable(GL_LIGHT2);
+		glEnable(GL_LIGHT3);
+		glEnable(GL_LIGHT4);
+	}
 }
 
 void init() {
@@ -658,58 +740,7 @@ void init() {
 	foot_move = false;
 	lights_on = true;
   
-  //lighting
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity;
-  
-	glEnable(GL_LIGHTING);
-  
-  
-    GLfloat one[] = {1, 1, 1, 1};
-    GLfloat medium[] = {0.5, 0.5, 0.5, 1};
-    GLfloat small[] = {0.2, 0.2, 0.2, 1};
-    GLfloat high[] = {100};
-    GLfloat light_specular[] = {1, 1, 1, 1};
-    GLfloat light_specular1[] = {0, 0.5, 1, 1};
-    GLfloat light_position[] = {0, 1, 1, 0};
-    GLfloat light_position1[] = {5, -5, 0, 1};
-	
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, medium);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, medium);
-	glEnable(GL_LIGHT0);
-	
-	// Disco lights
-	GLfloat disco_light_pos[] = {0, 0, 4, 1};
-	GLfloat disco_light1_dir[] = {0.5, 0, -1};
-	GLfloat disco_light2_dir[] = {0, 0.5, -1};
-	GLfloat disco_light3_dir[] = {-0.5, 0, -1};
-	GLfloat disco_light4_dir[] = {0, -0.5, -1};
-	GLfloat cutoff_angle = 30.0;
-	
-	glLightfv(GL_LIGHT1, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT2, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT3, GL_POSITION, disco_light_pos);
-	glLightfv(GL_LIGHT4, GL_POSITION, disco_light_pos);
-
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, cutoff_angle);
-	glLightf(GL_LIGHT4, GL_SPOT_CUTOFF, cutoff_angle);
-	
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, disco_light1_dir);
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, disco_light2_dir);
-	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, disco_light3_dir);
-	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, disco_light4_dir);
-	
-	glLightfv(GL_LIGHT1, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, reddish);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, reddish);
-	
-	glEnable(GL_LIGHT1);
+	reshape(w,h);
 	
 	glMaterialfv(GL_FRONT, GL_AMBIENT, one);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, one);
@@ -756,19 +787,21 @@ void init() {
 void display() {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	reshape(w, h);
 	glMatrixMode(GL_MODELVIEW);
 	glEnableClientState(GL_NORMAL_ARRAY);
 //	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glLoadIdentity();
 	
-	glDisable(GL_LIGHTING);
-	
 	camera();
-	
+	GLfloat view_matrix[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, view_matrix);
+
 	glEnable(GL_LIGHTING);
 	//draw_elephant(2.5, 0, 0);
 
-	draw_plunger(2, 0, 5);
+	draw_plunger(2, 0, 0);
 
 	draw_foot(0, 2, foot_height);
 	
@@ -841,44 +874,17 @@ void display() {
   draw_one(22,0,0, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
 
 
-
-	draw_elephant(-4.0,-4.0,0.0);
-  draw_ground();
+	draw_elephant(-1.0,-1.0,0.0);
+  draw_ground2(0,0,0);
   draw_seven();
-  //draw_ground2(0.0,0.0,0.0);
-  /*
-  
-  glBegin( GL_QUADS );
-    glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
-    glTexCoord2d(40.0,40.0); glVertex3d(-25.0,25.0, -1.4);
-    glTexCoord2d(0.0,40.0); glVertex3d(-25.0,25.0, 5.0);
-    glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
-	glEnd();
-  
-  glBegin( GL_QUADS );
-  glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
-  glTexCoord2d(40.0,40.0); glVertex3d(-25.0,25.0, -1.4);
-  glTexCoord2d(0.0,40.0); glVertex3d(-25.0,25.0, 5.0);
-  glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
-	glEnd();
-  
-  glBegin( GL_QUADS );
-  glTexCoord2d(0.0,0.0); glVertex3d(25.0,25.0, -1.4);
-  glTexCoord2d(40.0,40.0); glVertex3d(25.0,-25.0, -1.4);
-  glTexCoord2d(0.0,40.0); glVertex3d(25.0,-25.0, 5.0);
-  glTexCoord2d(40.0,0.0); glVertex3d(25.0,25.0, 5.0);
-	glEnd();
 
-  glBegin( GL_QUADS );
-  glTexCoord2d(0.0,0.0); glVertex3d(-25.0,-25.0, -1.4);
-  glTexCoord2d(40.0,40.0); glVertex3d(25.0,-25.0, -1.4);
-  glTexCoord2d(0.0,40.0); glVertex3d(25.0,-25.0, 5.0);
-  glTexCoord2d(40.0,0.0); glVertex3d(-25.0,-25.0, 5.0);
-	glEnd();
-  */
   
   RenderSkybox(pos, vec3(50,50,50));
-  
+  	
+	place_lights(view_matrix);
+	
+	glDisable(GL_LIGHTING);
+	
 	glutSwapBuffers();
   
 }
