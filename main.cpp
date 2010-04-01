@@ -109,7 +109,7 @@ float *eight_vertexdata, *eight_normaldata, *eight_texcoords, *eight_tangendata,
 // Colors
 GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
 GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-GLfloat shiny_hi[] = {50};
+GLfloat shiny_hi[] = {100};
 GLfloat shiny_lo[] = {5};
 GLfloat red[] = {0.7, 0, 0, 1};
 GLfloat reddish[] = {0.3, 0, 0, 1};
@@ -122,6 +122,8 @@ GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
 
+GLfloat elephant_color[] = {0.6, 0.4, 0, 1};
+
 GLfloat one[] = {1, 1, 1, 1};
 GLfloat medium[] = {0.5, 0.5, 0.5, 1};
 GLfloat small[] = {0.2, 0.2, 0.2, 1};
@@ -131,10 +133,10 @@ GLfloat light_position[] = {0, 1, 1, 0};
 
 // Disco lights
 GLfloat disco_light_pos[] = {0, 0, 4, 1};
-GLfloat disco_light1_dir[] = {0.5, 0, -1};
-GLfloat disco_light2_dir[] = {0, 0.5, -1};
-GLfloat disco_light3_dir[] = {-0.5, 0, -1};
-GLfloat disco_light4_dir[] = {0, -0.5, -1};
+GLfloat disco_light1_dir[] = {1, 0, -1};
+GLfloat disco_light2_dir[] = {0, 1, -1};
+GLfloat disco_light3_dir[] = {-1, 0, -1};
+GLfloat disco_light4_dir[] = {0, -1, -1};
 GLfloat cutoff_angle = 30.0;
 GLfloat disco_rotation = 0;
 
@@ -461,6 +463,10 @@ void draw_ground2(float x, float y, float z) {
 }
 
 void draw_elephant(float x, float y, float z) {
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, elephant_color);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, elephant_color);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, elephant_color);
+	
 	glVertexPointer(3, GL_FLOAT, 0, e_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, e_normaldata);
 	
@@ -468,13 +474,18 @@ void draw_elephant(float x, float y, float z) {
 	glTranslatef(x, y, z);
 	glDrawElements( GL_TRIANGLES, e_nindices, GL_UNSIGNED_INT, e_indices );
 	glPopMatrix();
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
 }
 
-void draw_one(float x, float y, float z, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
+void draw_one(float x, float y, float z, float rot, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 	glNormalPointer(GL_FLOAT, 0, normaldata);
 	
 	glPushMatrix();
+	glRotatef(rot, 0, 0.0, 1.0);
 	glTranslatef(x, y, z);
   glRotatef(90.0, 1.0, 0.0, 0.0);
 	glDrawElements( GL_TRIANGLES, nindices, GL_UNSIGNED_INT, indices );
@@ -492,6 +503,8 @@ void draw_plunger(float x, float y, float z) {
 	
 	glPushMatrix();
 	glTranslatef(x, y, z);
+	glRotatef(-disco_rotation, 0, 0, 1);
+	glRotatef(-90, 0, 1, 0);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
 	glPopMatrix();
 	
@@ -552,7 +565,7 @@ void draw_marble() {
 	
 	glPushMatrix();
 	glTranslatef(marble_pos.x, marble_pos.y, marble_pos.z);
-	glutSolidSphere(0.5, 10, 10);
+	glutSolidSphere(0.4, 10, 10);
 	glPopMatrix();
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
@@ -679,20 +692,20 @@ void place_lights(const GLfloat view_matrix[]) {
 	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, disco_light4_dir);
 	
 	glLightfv(GL_LIGHT1, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, reddish);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, reddish);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, red);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, red);
 	
 	glLightfv(GL_LIGHT2, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, greenish);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, greenish);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, green);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, green);
 	
 	glLightfv(GL_LIGHT3, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT3, GL_DIFFUSE, blueish);
-	glLightfv(GL_LIGHT3, GL_SPECULAR, blueish);
+	glLightfv(GL_LIGHT3, GL_DIFFUSE, blue);
+	glLightfv(GL_LIGHT3, GL_SPECULAR, blue);
 	
 	glLightfv(GL_LIGHT4, GL_AMBIENT, zero);
-	glLightfv(GL_LIGHT4, GL_DIFFUSE, yellowish);
-	glLightfv(GL_LIGHT4, GL_SPECULAR, yellowish);
+	glLightfv(GL_LIGHT4, GL_DIFFUSE, yellow);
+	glLightfv(GL_LIGHT4, GL_SPECULAR, yellow);
 	
 	glPopMatrix();
 	
@@ -731,7 +744,7 @@ void init() {
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
 	right = vec3(1, 0, 0);
-	pos = vec3(0, 0, 0);
+	pos = vec3(0, -7, 4);
 	amount = 3;
 	marble_pos = vec3(1.2, 1.2, 0);
 	wireframe_foot = false;
@@ -801,7 +814,7 @@ void display() {
 	glEnable(GL_LIGHTING);
 	//draw_elephant(2.5, 0, 0);
 
-	draw_plunger(2, 0, 0);
+	draw_plunger(0, 0, 4);
 
 	draw_foot(0, 2, foot_height);
 	
@@ -865,18 +878,23 @@ void display() {
 	//draw_ramp(-2, -3, 0);
 	
 	draw_marble();
-  draw_one(10,0,0, one_vertexdata, one_normaldata, one_nindices, one_indices);
-  draw_one(12,0,0, two_vertexdata, two_normaldata, two_nindices, two_indices);
-  draw_one(14,0,0, three_vertexdata, three_normaldata, three_nindices, three_indices);
-  draw_one(16,0,0, four_vertexdata, four_normaldata, four_nindices, four_indices);
-  draw_one(18,0,0, five_vertexdata, five_normaldata, five_nindices, five_indices);
-  draw_one(20,0,0, six_vertexdata, six_normaldata, six_nindices, six_indices);
-  draw_one(22,0,0, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
+  draw_one(0,5.5,0, 0, one_vertexdata, one_normaldata, one_nindices, one_indices);
+  draw_one(0,5.5,0, -45, two_vertexdata, two_normaldata, two_nindices, two_indices);
+  draw_one(0,5.5,0, -90, three_vertexdata, three_normaldata, three_nindices, three_indices);
+  draw_one(0,5.5,0, -135, four_vertexdata, four_normaldata, four_nindices, four_indices);
+  draw_one(0,5.5,0, -180, five_vertexdata, five_normaldata, five_nindices, five_indices);
+  draw_one(0,5.5,0, -225, six_vertexdata, six_normaldata, six_nindices, six_indices);
+	glPushMatrix();
+	glTranslatef(-8, -1,-2);
+	glRotatef(90, 1, 0, 0);
+	glRotatef(90, 0, 1, 0);
+	draw_seven();
+	glPopMatrix();
+  draw_one(0,5.5,0, -315, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
 
 
-	draw_elephant(-1.0,-1.0,0.0);
+	draw_elephant(0.0, -1.5, 1.0);
   draw_ground2(0,0,0);
-  draw_seven();
 
   
   RenderSkybox(pos, vec3(50,50,50));
