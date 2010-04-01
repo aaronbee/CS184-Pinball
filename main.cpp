@@ -449,15 +449,21 @@ void draw_seven() {
 }
 
 void draw_ground2(float x, float y, float z) {
+  
+  //glEnable(GL_TEXTURE_2D);
+  ground->updateTexture();
   glVertexPointer(3, GL_FLOAT, 0, g_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, g_normaldata);
   
 	glPushMatrix();
 	glTranslatef(x, y, z);
-  glScalef(2.0, 2.0, 2.0);
-	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
-  glScalef(0.5, 0.5, 0.5);
+  glScalef(10.0, 10.0, 10.0);
 
+	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
+
+  glScalef(0.1, 0.1, 0.1);
+
+  //glDisable(GL_TEXTURE_2D);
 }
 
 void draw_elephant(float x, float y, float z) {
@@ -726,7 +732,7 @@ void init() {
   tex6->open("6.tga");
   
   ground = new TGAImage();
-  ground->open("ground.tga");
+  ground->open("wood.tga");
   
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
@@ -747,7 +753,7 @@ void init() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, small);
 	glMaterialfv(GL_FRONT, GL_SHININESS, high);
   
-  LoadObjModel( "ground.obj", g_nverts, g_nindices, g_indices,
+  LoadObjModel( "pinballtable.obj", g_nverts, g_nindices, g_indices,
                g_vertexdata, g_normaldata, g_tangendata, g_binormdata, g_texcoords );
 	
 	LoadObjModel( "elephant2.obj", e_nverts, e_nindices, e_indices,
