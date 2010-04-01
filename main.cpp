@@ -13,8 +13,9 @@ vec3 right;
 vec3 pos;
 vec3 marble_pos;
 float foot_height;
-bool wireframe_foot;
-bool lights_on;
+bool wireframe_plunger;
+bool light0_on;
+bool all_lights_off;
 int w, h;
 
 bool bumper1_lit, bumper2_lit, bumper3_lit, bumper4_lit;
@@ -107,6 +108,11 @@ unsigned int *eight_indices;
 unsigned int eight_nverts;
 float *eight_vertexdata, *eight_normaldata, *eight_texcoords, *eight_tangendata, *eight_binormdata;
 
+unsigned int clock_nindices;
+unsigned int *clock_indices;
+unsigned int clock_nverts;
+float *clock_vertexdata, *clock_normaldata, *clock_texcoords, *clock_tangendata, *clock_binormdata;
+
 // Colors
 GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
 GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
@@ -122,7 +128,7 @@ GLfloat yellow[] = {0.7, 0.7, 0, 1};
 GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
-
+GLfloat pink[] = {0.7, 0.5, 0.5, 1.0};
 GLfloat elephant_color[] = {0.6, 0.4, 0, 1};
 
 GLfloat one[] = {1, 1, 1, 1};
@@ -159,20 +165,30 @@ void keyboard(unsigned char key, int x, int y) {
 			printf("amount set to %d\n", amount);
 			break;
 		case 'q':
-			wireframe_foot = !wireframe_foot;
+			wireframe_plunger = !wireframe_plunger;
 			break;
-		case 'e':
+		case 'f':
 			foot_move = !foot_move;
 			break;
 		case 'l':
-			if (lights_on) {
+			if (light0_on) {
 				glDisable(GL_LIGHT0);
-//				glDisable(GL_LIGHT1);
+				light0_on = false;
+			} else if (!all_lights_off) {
+				glDisable(GL_LIGHT1);
+				glDisable(GL_LIGHT2);
+				glDisable(GL_LIGHT3);
+				glDisable(GL_LIGHT4);
+				all_lights_off = true;
 			} else {
 				glEnable(GL_LIGHT0);
-//				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT1);
+				glEnable(GL_LIGHT2);
+				glEnable(GL_LIGHT3);
+				glEnable(GL_LIGHT4);
+				light0_on = true;
+				all_lights_off = false;
 			}
-			lights_on = !lights_on;
 			break;
 		case 'w':
 			change_in_pos = vec3(look.x * scale, look.y * scale, look.z * scale);
@@ -390,13 +406,13 @@ void draw_ground() {
 	glBegin( GL_QUADS );
   glNormal3d(0.0,0.0,1.0) ;
   glTexCoord2d(0.0,0.0); 
-  glVertex3d(-50.0,-50.0, -1.4); 
+  glVertex3d(-50.0,-50.0, -3.0); 
 glTexCoord2d(16.0,0.0); 
-  glVertex3d(50.0,-50.0, -1.4);
+  glVertex3d(50.0,-50.0, -3.0);
 glTexCoord2d(16.0,16.0); 
-  glVertex3d(50.0,50.0, -1.4);
+  glVertex3d(50.0,50.0, -3.0);
 glTexCoord2d(0.0,16.0); 
-  glVertex3d(-50.0,50.0, -1.4);
+  glVertex3d(-50.0,50.0, -3.0);
 	glEnd();
   glDisable(GL_TEXTURE_2D);
   
@@ -492,10 +508,13 @@ void draw_ground2(float x, float y, float z) {
   glScalef(10.0, 10.0, 10.0);
 
 	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
-  
+
+
+	
+
 
   glScalef(0.1, 0.1, 0.1);
-
+  glPopMatrix();
   //glDisable(GL_TEXTURE_2D);
 }
 
@@ -517,7 +536,7 @@ void draw_elephant(float x, float y, float z) {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
 }
 
-void draw_one(float x, float y, float z, float rot, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
+void draw_obj(float x, float y, float z, float rot, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 	glNormalPointer(GL_FLOAT, 0, normaldata);
 	
@@ -539,10 +558,14 @@ void draw_plunger(float x, float y, float z) {
 	glNormalPointer(GL_FLOAT, 0, p_normaldata);
 	
 	glPushMatrix();
+	if (wireframe_plunger)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glTranslatef(x, y, z);
 	glRotatef(-disco_rotation, 0, 0, 1);
 	glRotatef(-90, 0, 1, 0);
 	glDrawElements( GL_TRIANGLES, p_nindices, GL_UNSIGNED_INT, p_indices );
+	if (wireframe_plunger)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
@@ -561,11 +584,7 @@ void draw_foot(float x, float y, float z) {
 	
 	glPushMatrix();
 	glTranslatef(x, y, z);
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements( GL_TRIANGLES, f_nindices, GL_UNSIGNED_INT, f_indices );
-	if (wireframe_foot)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 	
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
@@ -746,7 +765,7 @@ void place_lights(const GLfloat view_matrix[]) {
 	
 	glPopMatrix();
 	
-	if (lights_on) {
+	if (light0_on) {
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 		glEnable(GL_LIGHT2);
@@ -786,11 +805,11 @@ void init() {
 	pos = vec3(0, -7, 4);
 	amount = 3;
 	marble_pos = vec3(1.2, 1.2, 0);
-	wireframe_foot = false;
+	wireframe_plunger = false;
 	foot_height = 1;
 	foot_up = true;
 	foot_move = false;
-	lights_on = true;
+	light0_on = true;
   
 	reshape(w,h);
 	
@@ -825,7 +844,8 @@ void init() {
   LoadObjModel( "6.obj", six_nverts, six_nindices, six_indices, six_vertexdata, six_normaldata, six_tangendata, six_binormdata, six_texcoords );
   LoadObjModel( "8.obj", eight_nverts, eight_nindices, eight_indices, eight_vertexdata, eight_normaldata, eight_tangendata, eight_binormdata, eight_texcoords );
   
-  
+    LoadObjModel( "clockface.obj", clock_nverts, clock_nindices, clock_indices, clock_vertexdata, clock_normaldata, clock_tangendata, clock_binormdata, clock_texcoords );
+
   
   
   
@@ -917,23 +937,39 @@ void display() {
 	//draw_ramp(-2, -3, 0);
 	
 	draw_marble();
-  draw_one(0,5.5,0, 0, one_vertexdata, one_normaldata, one_nindices, one_indices);
-  draw_one(0,5.5,0, -45, two_vertexdata, two_normaldata, two_nindices, two_indices);
-  draw_one(0,5.5,0, -90, three_vertexdata, three_normaldata, three_nindices, three_indices);
-  draw_one(0,5.5,0, -135, four_vertexdata, four_normaldata, four_nindices, four_indices);
-  draw_one(0,5.5,0, -180, five_vertexdata, five_normaldata, five_nindices, five_indices);
-  draw_one(0,5.5,0, -225, six_vertexdata, six_normaldata, six_nindices, six_indices);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, pink);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, pink);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, pink);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+  draw_obj(0,5.5,0, 0, one_vertexdata, one_normaldata, one_nindices, one_indices);
+  draw_obj(0,5.5,0, -45, two_vertexdata, two_normaldata, two_nindices, two_indices);
+  draw_obj(0,5.5,0, -90, three_vertexdata, three_normaldata, three_nindices, three_indices);
+  draw_obj(0,5.5,0, -135, four_vertexdata, four_normaldata, four_nindices, four_indices);
+  draw_obj(0,5.5,0, -180, five_vertexdata, five_normaldata, five_nindices, five_indices);
+  draw_obj(0,5.5,0, -225, six_vertexdata, six_normaldata, six_nindices, six_indices);
 	glPushMatrix();
 	glTranslatef(-8, -1,-2);
 	glRotatef(90, 1, 0, 0);
 	glRotatef(90, 0, 1, 0);
 	draw_seven();
 	glPopMatrix();
-  draw_one(0,5.5,0, -315, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
-
-
+  draw_obj(0,5.5,0, -315, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
+	
+	glPushMatrix();
+	glTranslatef(0,0,-2.5);
+	glScalef(4.5,4.5,1);
+	glRotatef(180, 1, 0, 0);
+	draw_obj(0,0,0,0,clock_vertexdata, clock_normaldata, clock_nindices, clock_indices);
+	glPopMatrix();
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
+	
 	draw_elephant(0.0, -1.5, 1.0);
-  draw_ground2(0,0,0);
+  //draw_ground2(0,0,0);
 
   draw_ground();
   draw_wall1();
