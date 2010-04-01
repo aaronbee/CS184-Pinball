@@ -29,6 +29,7 @@ Image* tex3;
 Image* tex4;
 Image* tex5;
 Image* tex6;
+Image* wood;
 Image* ground;
 
 unsigned int e_nindices;
@@ -351,6 +352,35 @@ void RenderSkybox(vec3 position,vec3 size)
  glDisable(GL_TEXTURE_2D);
 };
 
+void draw_wall1() {
+  glEnable(GL_TEXTURE_2D);
+  wood->updateTexture();
+	glBegin(GL_QUADS);		
+  glTexCoord2f(0.0,0.0); glVertex3f(-10.0,-10.0, 0.0);	
+  glTexCoord2f(0.0,1.0); glVertex3f(-10.0,-10.0, 2.0); 
+  glTexCoord2f(1.0,1.0); glVertex3f(-10.0, 10.0,2.0);
+  glTexCoord2f(1.0,0.0); glVertex3f(-10.0, 10.0,0.0);		
+  
+  glTexCoord2f(0.0,0.0); glVertex3f(-10.0, 10.0, 0.0);	
+  glTexCoord2f(0.0,1.0); glVertex3f(-10.0, 10.0, 2.0); 
+  glTexCoord2f(1.0,1.0); glVertex3f(10.0, 10.0,2.0);
+  glTexCoord2f(1.0,0.0); glVertex3f(10.0, 10.0,0.0);	
+  
+  glTexCoord2f(0.0,0.0); glVertex3f(10.0, 10.0, 0.0);	
+  glTexCoord2f(0.0,1.0); glVertex3f(10.0, 10.0, 2.0); 
+  glTexCoord2f(1.0,1.0); glVertex3f(10.0, -10.0,2.0);
+  glTexCoord2f(1.0,0.0); glVertex3f(10.0, -10.0,0.0);	
+  
+  glTexCoord2f(0.0,0.0); glVertex3f(10.0, -10.0, 0.0);	
+  glTexCoord2f(0.0,1.0); glVertex3f(10.0, -10.0, 2.0); 
+  glTexCoord2f(1.0,1.0); glVertex3f(-10.0, -10.0,2.0);
+  glTexCoord2f(1.0,0.0); glVertex3f(-10.0, -10.0,0.0);	
+	glEnd();
+  glDisable(GL_TEXTURE_2D);
+  
+}
+
+//draw a stationary groundplane
 void draw_ground() {
   glEnable(GL_TEXTURE_2D);
   ground->updateTexture();
@@ -374,80 +404,80 @@ glTexCoord2d(0.0,16.0);
 }
 
 void draw_seven() {
-  glEnable(GL_TEXTURE_2D);
+
   glBegin(GL_QUADS);
   
   ground->updateTexture();
   //top half of sandwich
-  glNormal3d(0.0,0.0,1.0);
-  glVertex3d(0.0,0.0,3.0);
-  glVertex3d(1.0,0.0,3.0);
-  glVertex3d(3.0,4.0,3.0);
-  glVertex3d(2.0,4.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(0.0,0.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(1.0,0.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(3.0,4.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(2.0,4.0,3.0);
   
-  glVertex3d(0.0,4.0,3.0);
-  glVertex3d(0.0,5.0,3.0);
-  glVertex3d(3.0,5.0,3.0);
-  glVertex3d(3.0,4.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(0.0,4.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(0.0,5.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(3.0,5.0,3.0);
+  glNormal3d(0.0,0.0,1.0); glVertex3d(3.0,4.0,3.0);
   
   
   //bottom half of sandwich
-  glNormal3d(0.0,0.0,-1.0);
-  glVertex3d(0.0,0.0,2.0);
-  glVertex3d(1.0,0.0,2.0);
-  glVertex3d(3.0,4.0,2.0);
-  glVertex3d(2.0,4.0,2.0);
   
-  glVertex3d(0.0,4.0,2.0);
-  glVertex3d(0.0,5.0,2.0);
-  glVertex3d(3.0,5.0,2.0);
-  glVertex3d(3.0,4.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(0.0,0.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(1.0,0.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(3.0,4.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(2.0,4.0,2.0);
+  
+  glNormal3d(0.0,0.0,-1.0);glNormal3d(0.0,0.0,-1.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(0.0,4.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(0.0,5.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(3.0,5.0,2.0);
+  glNormal3d(0.0,0.0,-1.0);glVertex3d(3.0,4.0,2.0);
   
   //start from top left
-  glNormal3d(0.0,1.0,0.0);
-  glVertex3d(0.0,5.0,3.0);
-  glVertex3d(3.0,5.0,3.0);
-  glVertex3d(3.0,5.0,2.0);
-  glVertex3d(0.0,5.0,2.0);
   
-  glNormal3d(1.0,0.0,0.0);
-  glVertex3d(3.0,5.0,3.0);
-  glVertex3d(3.0,4.0,3.0);
-  glVertex3d(3.0,4.0,2.0);
-  glVertex3d(3.0,5.0,2.0);
-
-  glNormal3d(0.895,-0.447,0.0);
-  glVertex3d(3.0,4.0,3.0);
-  glVertex3d(1.0,0.0,3.0);
-  glVertex3d(1.0,0.0,2.0);
-  glVertex3d(3.0,4.0,2.0);
-
-  glNormal3d(0.0,-1.0,0.0);
-  glVertex3d(1.0,0.0,3.0);
-  glVertex3d(0.0,0.0,3.0);
-  glVertex3d(0.0,0.0,2.0);
-  glVertex3d(1.0,0.0,2.0);
-
-  glNormal3d(-0.895,0.447,0.0);
-  glVertex3d(0.0,0.0,3.0);
-  glVertex3d(2.0,4.0,3.0);
-  glVertex3d(2.0,4.0,2.0);
-  glVertex3d(0.0,0.0,2.0);
+  glNormal3d(0.0,1.0,0.0);glVertex3d(0.0,5.0,3.0);
+  glNormal3d(0.0,1.0,0.0);glVertex3d(3.0,5.0,3.0);
+  glNormal3d(0.0,1.0,0.0);glVertex3d(3.0,5.0,2.0);
+  glNormal3d(0.0,1.0,0.0);glVertex3d(0.0,5.0,2.0);
   
-  glNormal3d(0.0,-1.0,0.0);
-  glVertex3d(2.0,4.0,3.0);
-  glVertex3d(0.0,4.0,3.0);
-  glVertex3d(0.0,4.0,2.0);
-  glVertex3d(2.0,4.0,2.0);
   
-  glNormal3d(-1.0,0.0,0.0);
-  glVertex3d(0.0,4.0,3.0);
-  glVertex3d(0.0,5.0,3.0);
-  glVertex3d(0.0,5.0,2.0);
-  glVertex3d(0.0,4.0,2.0);
+  glNormal3d(1.0,0.0,0.0);glVertex3d(3.0,5.0,3.0);
+  glNormal3d(1.0,0.0,0.0);glVertex3d(3.0,4.0,3.0);
+  glNormal3d(1.0,0.0,0.0);glVertex3d(3.0,4.0,2.0);
+  glNormal3d(1.0,0.0,0.0);glVertex3d(3.0,5.0,2.0);
+
+  
+  glNormal3d(0.895,-0.447,0.0);glVertex3d(3.0,4.0,3.0);
+  glNormal3d(0.895,-0.447,0.0);glVertex3d(1.0,0.0,3.0);
+  glNormal3d(0.895,-0.447,0.0);glVertex3d(1.0,0.0,2.0);
+  glNormal3d(0.895,-0.447,0.0);glVertex3d(3.0,4.0,2.0);
+
+  
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(1.0,0.0,3.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(0.0,0.0,3.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(0.0,0.0,2.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(1.0,0.0,2.0);
+
+  
+  glNormal3d(-0.895,0.447,0.0);glVertex3d(0.0,0.0,3.0);
+  glNormal3d(-0.895,0.447,0.0);glVertex3d(2.0,4.0,3.0);
+  glNormal3d(-0.895,0.447,0.0);glVertex3d(2.0,4.0,2.0);
+  glNormal3d(-0.895,0.447,0.0);glVertex3d(0.0,0.0,2.0);
+  
+  
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(2.0,4.0,3.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(0.0,4.0,3.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(0.0,4.0,2.0);
+  glNormal3d(0.0,-1.0,0.0);glVertex3d(2.0,4.0,2.0);
+  
+  
+  glNormal3d(-1.0,0.0,0.0);glVertex3d(0.0,4.0,3.0);
+  glNormal3d(-1.0,0.0,0.0);glVertex3d(0.0,5.0,3.0);
+  glNormal3d(-1.0,0.0,0.0);glVertex3d(0.0,5.0,2.0);
+  glNormal3d(-1.0,0.0,0.0);glVertex3d(0.0,4.0,2.0);
   
   glEnd();
- glDisable(GL_TEXTURE_2D);
+
 }
 
 void draw_ground2(float x, float y, float z) {
@@ -462,6 +492,7 @@ void draw_ground2(float x, float y, float z) {
   glScalef(10.0, 10.0, 10.0);
 
 	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
+  
 
   glScalef(0.1, 0.1, 0.1);
 
@@ -737,6 +768,7 @@ void init() {
   tex4 = new TGAImage();
   tex5 = new TGAImage();
   tex6 = new TGAImage();
+  wood = new TGAImage();
   tex1->open("1.tga");
   tex2->open("2.tga");
   tex3->open("3.tga");
@@ -744,8 +776,9 @@ void init() {
   tex5->open("5.tga");
   tex6->open("6.tga");
   
+  wood->open("wood.tga");
   ground = new TGAImage();
-  ground->open("wood.tga");
+  ground->open("ground.tga");
   
 	look = vec3(0, 1, 0);
 	up = vec3(0, 0, 1);
@@ -902,9 +935,11 @@ void display() {
 	draw_elephant(0.0, -1.5, 1.0);
   draw_ground2(0,0,0);
 
-  
+  draw_ground();
+  draw_wall1();
   RenderSkybox(pos, vec3(50,50,50));
-  	
+
+  
 	place_lights(view_matrix);
 	
 	glDisable(GL_LIGHTING);
