@@ -1,2 +1,59 @@
-This is brandon's change
+Aaron Beitch
+Brandon Liu
 
+http://inst.eecs.berkeley.edu/~cs184-ex
+
+Our scene is a collection of objects and animations inspire by a
+Sesame Street cartoon which can viewed here:
+
+http://www.youtube.com/watch?v=HgocE-JfWFI
+
+* Our scene is complete as it contains several objects from the video
+  and there is very little dead space.
+
+* The number 7 was modeled by hand.
+
+* Just about every other object was loaded from an obj file.
+
+* The objects have been placed by hand.
+
+* The skybox is textured with an image read from a tga file.
+
+* The wooden wall is also textured.
+
+* We have several objects that are shiny like the marble and
+  plunger. The foot is dull.
+
+* GL_LIGHT0 is a directional light.
+
+* The spinning colored lights (GL_LIGHT1 through GL_LIGHT4) are
+  point lights.
+
+* We drew four bumpers without duplicating the object.
+
+* Pressing 'q' will toggle the plunger between filled and wireframe
+  rendering.
+
+* Just about all our objects have normals.
+
+* Our code is based on the "Helper Code" and includes double
+  buffering, hidden surface elimination, and a perspective projection.
+
+* Pressing 'l' toggles the lights and textures between three modes:
+  1. All lights and textures on.
+  2. GL_LIGHT0 off which makes the other lights stand out more.
+  3. All lights and textures off.
+
+* Mouse drag and the arrow keys rotate the viewer. WASD moves the
+  viewer.
+
+* The plunger in the middle of the scene is constantly animated as
+  well as the ball as long as the foot is not in the way. To toggle
+  the movement of the foot press 'f'.
+
+Extra Credit
+
+* We have some very basic collision detection for the foot and the
+  ball. If the foot is in the way of the ball, the ball will wait. If
+  the foot falls on top of the ball the foot will immediately start
+  going back up. The foot movement is toggled with 'f'.
