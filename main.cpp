@@ -578,7 +578,7 @@ void draw_foot(float x, float y, float z) {
 	glVertexPointer(3, GL_FLOAT, 0, f_vertexdata);
 	glNormalPointer(GL_FLOAT, 0, f_normaldata);
 		
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, foot_color);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, zero);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, foot_color);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, foot_color);
 	
