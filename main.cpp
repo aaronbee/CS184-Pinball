@@ -107,6 +107,11 @@ unsigned int *eight_indices;
 unsigned int eight_nverts;
 float *eight_vertexdata, *eight_normaldata, *eight_texcoords, *eight_tangendata, *eight_binormdata;
 
+unsigned int clock_nindices;
+unsigned int *clock_indices;
+unsigned int clock_nverts;
+float *clock_vertexdata, *clock_normaldata, *clock_texcoords, *clock_tangendata, *clock_binormdata;
+
 // Colors
 GLfloat gray[] = {0.5, 0.5, 0.5, 1.0};
 GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
@@ -122,7 +127,7 @@ GLfloat yellow[] = {0.7, 0.7, 0, 1};
 GLfloat yellowish[] = {0.3, 0.3, 0, 1};
 GLfloat zero[] = {0.0, 0.0, 0.0, 0.0};
 GLfloat foot_color[] = {0.65, 0.5, 0.5, 1.0};
-
+GLfloat pink[] = {0.7, 0.5, 0.5, 1.0};
 GLfloat elephant_color[] = {0.6, 0.4, 0, 1};
 
 GLfloat one[] = {1, 1, 1, 1};
@@ -470,6 +475,7 @@ void draw_ground2(float x, float y, float z) {
   glScalef(2.0, 2.0, 2.0);
 	glDrawElements( GL_TRIANGLES, g_nindices, GL_UNSIGNED_INT, g_indices );
   glScalef(0.5, 0.5, 0.5);
+	glPopMatrix();
 
 }
 
@@ -491,7 +497,7 @@ void draw_elephant(float x, float y, float z) {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
 }
 
-void draw_one(float x, float y, float z, float rot, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
+void draw_obj(float x, float y, float z, float rot, float *vertexdata, float *normaldata, unsigned int nindices, unsigned int *indices) {
 	glVertexPointer(3, GL_FLOAT, 0, vertexdata);
 	glNormalPointer(GL_FLOAT, 0, normaldata);
 	
@@ -797,7 +803,8 @@ void init() {
   LoadObjModel( "6.obj", six_nverts, six_nindices, six_indices, six_vertexdata, six_normaldata, six_tangendata, six_binormdata, six_texcoords );
   LoadObjModel( "8.obj", eight_nverts, eight_nindices, eight_indices, eight_vertexdata, eight_normaldata, eight_tangendata, eight_binormdata, eight_texcoords );
   
-  
+    LoadObjModel( "clockface.obj", clock_nverts, clock_nindices, clock_indices, clock_vertexdata, clock_normaldata, clock_tangendata, clock_binormdata, clock_texcoords );
+
   
   
   
@@ -889,21 +896,37 @@ void display() {
 	//draw_ramp(-2, -3, 0);
 	
 	draw_marble();
-  draw_one(0,5.5,0, 0, one_vertexdata, one_normaldata, one_nindices, one_indices);
-  draw_one(0,5.5,0, -45, two_vertexdata, two_normaldata, two_nindices, two_indices);
-  draw_one(0,5.5,0, -90, three_vertexdata, three_normaldata, three_nindices, three_indices);
-  draw_one(0,5.5,0, -135, four_vertexdata, four_normaldata, four_nindices, four_indices);
-  draw_one(0,5.5,0, -180, five_vertexdata, five_normaldata, five_nindices, five_indices);
-  draw_one(0,5.5,0, -225, six_vertexdata, six_normaldata, six_nindices, six_indices);
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, pink);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, pink);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, pink);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_hi);
+  draw_obj(0,5.5,0, 0, one_vertexdata, one_normaldata, one_nindices, one_indices);
+  draw_obj(0,5.5,0, -45, two_vertexdata, two_normaldata, two_nindices, two_indices);
+  draw_obj(0,5.5,0, -90, three_vertexdata, three_normaldata, three_nindices, three_indices);
+  draw_obj(0,5.5,0, -135, four_vertexdata, four_normaldata, four_nindices, four_indices);
+  draw_obj(0,5.5,0, -180, five_vertexdata, five_normaldata, five_nindices, five_indices);
+  draw_obj(0,5.5,0, -225, six_vertexdata, six_normaldata, six_nindices, six_indices);
 	glPushMatrix();
 	glTranslatef(-8, -1,-2);
 	glRotatef(90, 1, 0, 0);
 	glRotatef(90, 0, 1, 0);
 	draw_seven();
 	glPopMatrix();
-  draw_one(0,5.5,0, -315, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
-
-
+  draw_obj(0,5.5,0, -315, eight_vertexdata, eight_normaldata, eight_nindices, eight_indices);
+	
+	glPushMatrix();
+	glTranslatef(0,0,-2.5);
+	glScalef(4.5,4.5,1);
+	glRotatef(180, 1, 0, 0);
+	draw_obj(0,0,0,0,clock_vertexdata, clock_normaldata, clock_nindices, clock_indices);
+	glPopMatrix();
+	
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+	glMaterialfv(GL_FRONT, GL_SHININESS, shiny_lo);
+	
 	draw_elephant(0.0, -1.5, 1.0);
   draw_ground2(0,0,0);
 
